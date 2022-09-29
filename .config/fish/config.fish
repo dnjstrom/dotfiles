@@ -86,3 +86,5 @@ set -u fish_color_quote green
 
 
 starship init fish | source
+
+direnv hook fish | source
