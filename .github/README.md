@@ -13,11 +13,21 @@ git --version
 Set up the config files.
 
 ```
+mkdir -p ~/Code
 git clone --bare git@github.com:dnjstrom/dotfiles.git ~/Code/dotfiles
 cd ~/Code/dotfiles
 alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME
 cfg config --local status.showUntrackedFiles no
 cfg checkout
+```
+
+Install Homebrew
+
+```
+# https://brew.sh/
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+cd ~
+brew bundle install
 ```
 
 Install Nix.
