@@ -22,10 +22,16 @@
 
 
   home.packages = [
+    pkgs.ctop
+    pkgs.direnv
     pkgs.fish
     pkgs.git
     pkgs.htop
     pkgs.jq
+    pkgs.neovim
+    pkgs.reattach-to-user-namespace
+    pkgs.starship
+    pkgs.tmux
     pkgs.tree
   ];
 }

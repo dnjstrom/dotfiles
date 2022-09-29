@@ -1,0 +1,134 @@
+shell:
+  program: /Users/daniel/.nix-profile/bin/fish
+  args:
+    - --login
+    - -C
+    - "tmux-attach-to-first-unattached-session-or-create"
+
+alt_send_esc: false
+
+window:
+  decorations: "none"
+  dynamic_padding: true
+  padding:
+    x: 4
+    y: 4
+  opacity: 1
+
+# Font configuration (changes require restart)
+font:
+  # The size to use.
+  size: 13
+  normal:
+    family: Fira Code
+    style: Retina
+  bold:
+    family: Fira Code
+    style: Bold
+  italic:
+    family: Fira Code
+    style: Retina
+
+schemes:
+
+  snazzy: &selected_color_scheme
+    primary:
+      background: "#282a36"
+      foreground: "#eff0eb"
+    normal:
+      black: "#282a36"
+      red: "#ff5c57"
+      green: "#5af78e"
+      yellow: "#f3f99d"
+      blue: "#57c7ff"
+      magenta: "#ff6ac1"
+      cyan: "#9aedfe"
+      white: "#f1f1f0"
+    bright:
+      black: "#686868"
+      red: "#ff5c57"
+      green: "#5af78e"
+      yellow: "#f3f99d"
+      blue: "#57c7ff"
+      magenta: "#ff6ac1"
+      cyan: "#9aedfe"
+      white: "#f1f1f0"
+
+  nord:
+    primary:
+      background: '#2e3440'
+      foreground: '#d8dee9'
+      dim_foreground: '#a5abb6'
+    cursor:
+      text: '#2e3440'
+      cursor: '#d8dee9'
+    vi_mode_cursor:
+      text: '#2e3440'
+      cursor: '#d8dee9'
+    selection:
+      text: CellForeground
+      background: '#4c566a'
+    search:
+      matches:
+        foreground: CellBackground
+        background: '#88c0d0'
+      bar:
+        background: '#434c5e'
+        foreground: '#d8dee9'
+    normal:
+      black: '#3b4252'
+      red: '#bf616a'
+      green: '#a3be8c'
+      yellow: '#ebcb8b'
+      blue: '#81a1c1'
+      magenta: '#b48ead'
+      cyan: '#88c0d0'
+      white: '#e5e9f0'
+    bright:
+      black: '#4c566a'
+      red: '#bf616a'
+      green: '#a3be8c'
+      yellow: '#ebcb8b'
+      blue: '#81a1c1'
+      magenta: '#b48ead'
+      cyan: '#8fbcbb'
+      white: '#eceff4'
+    dim:
+      black: '#373e4d'
+      red: '#94545d'
+      green: '#809575'
+      yellow: '#b29e75'
+      blue: '#68809a'
+      magenta: '#8c738c'
+      cyan: '#6d96a5'
+      white: '#aeb3bb'
+
+  oceanic_next:
+    primary:
+      background: '#1b2b34'
+      foreground: '#d8dee9'
+    cursor:
+      text: '#1b2b34'
+      cursor: '#ffffff'
+    normal:
+      black:   '#343d46'
+      red:     '#EC5f67'
+      green:   '#99C794'
+      yellow:  '#FAC863'
+      blue:    '#6699cc'
+      magenta: '#c594c5'
+      cyan:    '#5fb3b3'
+      white:   '#d8dee9'
+    bright:
+      black:   '#343d46'
+      red:     '#EC5f67'
+      green:   '#99C794'
+      yellow:  '#FAC863'
+      blue:    '#6699cc'
+      magenta: '#c594c5'
+      cyan:    '#5fb3b3'
+      white:   '#d8dee9'
+
+
+# Color theme
+colors: *selected_color_scheme

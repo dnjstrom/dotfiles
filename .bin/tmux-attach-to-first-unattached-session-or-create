@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Credit: https://unix.stackexchange.com/a/529049
+
+# Attach to the first tmux session that has no attached clients.
+# If there are no unattached sessions, then create a new session.
+tmux attach -t tmux-name-of-first-unattached-session 2> /dev/null || tmux
+
