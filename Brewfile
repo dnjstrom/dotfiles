@@ -5,10 +5,13 @@
 # Remove surplus packages: brew bundle cleanup -f
 # Overwrite: brew bundle dump 
 
+tap "dnjstrom/git-select-branch"
 tap "homebrew/bundle"
 tap "homebrew/cask"
-tap "homebrew/core"
 tap "homebrew/cask-fonts"
+tap "homebrew/core"
+
+brew "dnjstrom/git-select-branch/git-select-branch"
 
 cask "alacritty"
 cask "docker"

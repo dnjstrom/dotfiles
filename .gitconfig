@@ -1,3 +1,6 @@
 [user]
 	name = Daniel Ström
 	email = D@nielstrom.se
+
+[alias]
+  select-branch = "!git-select-branch"
