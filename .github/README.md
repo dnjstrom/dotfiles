@@ -21,11 +21,9 @@ https://www.atlassian.com/git/tutorials/dotfiles
 
 ```
 mkdir -p ~/Code
-git clone --bare git@github.com:dnjstrom/dotfiles.git ~/Code/dotfiles
-cd ~/Code/dotfiles
-alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME
-cfg config --local status.showUntrackedFiles no
-cfg checkout
+git clone --bare https://github.com/dnjstrom/dotfiles.git ~/Code/dotfiles
+git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
+git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME checkout
 ```
 
 #### Install Homebrew
