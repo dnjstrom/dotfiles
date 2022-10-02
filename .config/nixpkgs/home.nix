@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -26,6 +26,7 @@
     pkgs.direnv
     pkgs.fish
     pkgs.git
+    pkgs.grc
     pkgs.htop
     pkgs.jq
     pkgs.neovim
@@ -34,4 +35,25 @@
     pkgs.tmux
     pkgs.tree
   ];
-}
+
+  programs.fish = {
+    enable = true;
+
+    plugins = [
+      { name = "foreign-env"; src = pkgs.fishPlugins.foreign-env.src; }
+      { name = "autopair-fish"; src = pkgs.fishPlugins.autopair-fish.src; }
+      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+      {
+        name = "z";
+        src = pkgs.fetchFromGitHub {
+          owner = "jethrokuan";
+          repo = "z";
+          rev = "85f863f20f24faf675827fb00f3a4e15c7838d76";
+          sha256 = "sha256-+FUBM7CodtZrYKqU542fQD+ZDGrd2438trKM0tIESs0=";
+        };
+      }
+    ];
+
+    shellInit = "source $HOME/.fishrc.fish";
+  };
+} 

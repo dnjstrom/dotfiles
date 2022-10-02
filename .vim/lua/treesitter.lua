@@ -1,5 +1,5 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
+  ensure_installed = "bash c clojure comment css dockerfile elm fish go graphql haskell help hjson html http java javascript jsdoc json json5 jsonc kotlin latex lua make markdown nix pug python regex ruby rust svelte todotxt tsx typescript vim vue",
   highlight = {
     enable = true,
   },
