@@ -30,7 +30,7 @@ if not set -q abbrs_initialized
 
     abbr vim 'nvim'
     abbr d 'docker'
-    abbr dc 'docker-compose'
+    abbr dc 'docker compose'
     abbr ga 'git add'
     abbr gA 'git add -A :/'
     abbr gc 'git checkout'
