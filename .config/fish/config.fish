@@ -1,26 +1,15 @@
 # Clear greeting message on startup
-set fish_greeting
+set -g fish_greeting
 
 # Environment variables
 # Set english locale
 set -x LC_ALL en_US.UTF-8
 set -x LANG en_US.UTF-8
 set -x EDITOR nvim
-set -x PATH $PATH ~/.bin
-set -x PATH $PATH ~/.nix-profile/bin
-set -x PATH $PATH ~/Code/dotfiles/bin
+set -x PATH $PATH /opt/homebrew/bin
 
 # Set up secret environment variables
 # source ~/.dotfiles/fish/config.secret.fish
-
-# Load nix environment
-if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-end
-
-if test -e /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-    fenv source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-end
 
 # Alias for managing config files
 alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME'
@@ -94,5 +83,4 @@ set -u fish_color_quote green
 
 
 starship init fish | source
-direnv hook fish | source
 brew shellenv | source
