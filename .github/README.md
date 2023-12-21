@@ -36,21 +36,16 @@ cd ~/.brew
 brew bundle install
 ```
 
-#### Install Nix
+##### Install tmux plugins
 
-https://nixos.org/download.html#nix-install-macos
+    tmux
+    # Type <Ctrl-a I>
 
-```
-sh <(curl -L https://nixos.org/nix/install)
-```
+##### Install fish plugins
 
-#### Install Home manager
+    fisher update
 
-https://rycee.gitlab.io/home-manager/index.html#sec-install-standalone
+##### Install vim plugins
 
-```
-nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-nix-channel --update
-nix-shell '<home-manager>' -A install
-home-manager switch
-```
+    vim
+    :PlugInstall    
