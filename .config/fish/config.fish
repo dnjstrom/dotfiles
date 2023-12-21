@@ -6,7 +6,11 @@ set -g fish_greeting
 set -x LC_ALL en_US.UTF-8
 set -x LANG en_US.UTF-8
 set -x EDITOR nvim
+set -x N_PREFIX $HOME/.local
 set -x PATH $PATH /opt/homebrew/bin
+set -x PATH $PATH $HOME/.local/bin
+
+
 
 # Set up secret environment variables
 # source ~/.dotfiles/fish/config.secret.fish
