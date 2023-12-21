@@ -1,11 +1,9 @@
 shell:
-  program: /Users/daniel/.nix-profile/bin/fish
+  program: /opt/homebrew/bin/fish
   args:
     - --login
     - -C
-    - "tmux-attach-to-first-unattached-session-or-create"
-
-alt_send_esc: false
+    - "tmux new-session -A -s main"
 
 window:
   decorations: "none"

@@ -1,23 +1,40 @@
-# This should only be used for applications with graphical user interfaces until
-# https://github.com/nix-community/home-manager/issues/1341 is resolved.
-
-# Install: brew bundle install
-# Remove surplus packages: brew bundle cleanup -f
-# Overwrite: brew bundle dump 
-
 tap "dnjstrom/git-select-branch"
 tap "homebrew/bundle"
-tap "homebrew/cask"
 tap "homebrew/cask-fonts"
-tap "homebrew/core"
-
+brew "ctop"
+brew "fish"
+brew "fisher"
+brew "gh"
+brew "grc"
+brew "htop"
+brew "jq"
+brew "neovim"
+brew "node"
+brew "reattach-to-user-namespace"
+brew "rust"
+brew "starship"
+brew "tmux"
+brew "tpm"
+brew "tree"
 brew "dnjstrom/git-select-branch/git-select-branch"
-
+cask "1password"
 cask "alacritty"
 cask "docker"
+cask "figma"
 cask "font-fira-code"
 cask "google-chrome"
 cask "messenger"
 cask "phoenix"
+cask "slack"
 cask "spotify"
 cask "visual-studio-code"
+vscode "christian-kohler.npm-intellisense"
+vscode "christian-kohler.path-intellisense"
+vscode "dbaeumer.vscode-eslint"
+vscode "EditorConfig.EditorConfig"
+vscode "esbenp.prettier-vscode"
+vscode "formulahendry.auto-close-tag"
+vscode "formulahendry.auto-rename-tag"
+vscode "mikestead.dotenv"
+vscode "ms-azuretools.vscode-docker"
+vscode "vscodevim.vim"
