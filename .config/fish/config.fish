@@ -10,6 +10,12 @@ set -x N_PREFIX $HOME/.local
 set -x PATH $PATH /opt/homebrew/bin
 set -x PATH $PATH $HOME/.local/bin
 
+# pnpm
+set -gx PNPM_HOME "/Users/daniel/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+
 
 
 # Set up secret environment variables
@@ -18,37 +24,34 @@ set -x PATH $PATH $HOME/.local/bin
 # Alias for managing config files
 alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME'
 
-if not set -q abbrs_initialized
-    set -U abbrs_initialized
-
-    abbr vim 'nvim'
-    abbr d 'docker'
-    abbr dc 'docker compose'
-    abbr ga 'git add'
-    abbr gA 'git add -A :/'
-    abbr gc 'git checkout'
-    abbr gC 'git commit'
-    abbr gAC 'git add -A :/; git commit'
-    abbr gf 'git fetch'
-    abbr gp 'git pull --rebase'
-    abbr gP 'git push -u origin HEAD'
-    abbr gr 'git rebase'
-    abbr gs 'git status'
-    abbr gd 'git -c color.ui=always status -v -v | less -RX'
-    abbr gl 'git log --oneline --graph'
-    abbr gb 'git branch'
-    abbr geach 'git submodule foreach'
-    abbr grekt 'git reset --hard HEAD'
-    abbr cd- 'cd -'
-    abbr y 'yarn'
-    abbr ys 'yarn start'
-    abbr yd 'yarn dev'
-    abbr yb 'yarn build'
-    abbr l 'la'
-    abbr c 'code .'
-    abbr gitclean 'git checkout master; and git fetch -p; and git pull; and git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d; and git fetch --prune'
-    abbr gu 'git branch -u origin/(git rev-parse --abbrev-ref HEAD)'
-end
+abbr vim 'nvim'
+abbr d 'docker'
+abbr dc 'docker compose'
+abbr ga 'git add'
+abbr gA 'git add -A :/'
+abbr gc 'git checkout'
+abbr gC 'git commit'
+abbr gAC 'git add -A :/; git commit'
+abbr gf 'git fetch'
+abbr gp 'git pull --rebase'
+abbr gP 'git push -u origin HEAD'
+abbr gr 'git rebase'
+abbr gs 'git status'
+abbr gd 'git -c color.ui=always status -v -v | less -RX'
+abbr gl 'git log --oneline --graph'
+abbr gb 'git branch'
+abbr geach 'git submodule foreach'
+abbr grekt 'git reset --hard HEAD'
+abbr cd- 'cd -'
+abbr y 'yarn'
+abbr ys 'yarn start'
+abbr yd 'yarn dev'
+abbr yb 'yarn build'
+abbr l 'la'
+abbr c 'code .'
+abbr gitclean 'git checkout master; and git fetch -p; and git pull; and git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d; and git fetch --prune'
+abbr gu 'git branch -u origin/(git rev-parse --abbrev-ref HEAD)'
+abbr pn pnpm
 
 function tmux_func
     if tmux ls | grep -vq attached
@@ -88,3 +91,10 @@ set -u fish_color_quote green
 
 starship init fish | source
 brew shellenv | source
+
+# pnpm
+set -gx PNPM_HOME "/Users/daniel/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
