@@ -47,7 +47,7 @@ local on_attach = function(client, bufnr)
   -- Mappings.
   local opts = { noremap=true, silent=true }
 
-  vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync()")
+  vim.cmd("command! LspFormatting lua vim.lsp.buf.format()")
 
 
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
@@ -60,7 +60,7 @@ local on_attach = function(client, bufnr)
 
 
   -- Format on save if formatting is available
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_exec([[
        augroup LspAutocommands
          autocmd! * <buffer>
@@ -99,7 +99,7 @@ nvim_lsp.tsserver.setup {
     },
 
     on_attach = function(client)
-        client.resolved_capabilities.document_formatting = false
+        client.server_capabilities.documentFormattingProvider = false
         on_attach(client)
     end,
 
