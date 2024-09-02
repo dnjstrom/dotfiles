@@ -48,4 +48,10 @@ brew bundle install
 ##### Install vim plugins
 
     vim
-    :PlugInstall    
+    :PlugInstall
+
+##### Edit config
+
+Once all set up edits are facilitated via an alias `cfg` that can be used in place of `git`
+
+    cfg status
