@@ -1,5 +1,5 @@
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 
-. "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/daniel/.lmstudio/bin"
+# End of LM Studio CLI section
 
-path+=("$HOME/.nix-profile/bin")

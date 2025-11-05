@@ -56,10 +56,11 @@ Plug 'bluz71/vim-nightfly-guicolors'
 
 " Highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 " Intellisense
 Plug 'neovim/nvim-lspconfig'
-Plug 'tami5/lspsaga.nvim'
+Plug 'nvimdev/lspsaga.nvim'
 Plug 'kosayoda/nvim-lightbulb'
 
 call plug#end()

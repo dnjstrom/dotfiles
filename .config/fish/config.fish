@@ -49,9 +49,11 @@ abbr yd 'yarn dev'
 abbr yb 'yarn build'
 abbr l 'la'
 abbr c 'code .'
-abbr gitclean 'git checkout master; and git fetch -p; and git pull; and git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d; and git fetch --prune'
+abbr gitclean 'git checkout main; and git fetch -p; and git pull; and git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d; and git fetch --prune'
 abbr gu 'git branch -u origin/(git rev-parse --abbrev-ref HEAD)'
 abbr pn pnpm
+abbr scripts 'cat package.json | jq .scripts'
+abbr code code-insiders
 
 function tmux_func
     if tmux ls | grep -vq attached
@@ -98,3 +100,8 @@ if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/daniel/.lmstudio/bin
+# End of LM Studio CLI section
+

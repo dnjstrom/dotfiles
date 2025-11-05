@@ -91,7 +91,7 @@ end
 
 
 -- Disable formatting for tsserver
-nvim_lsp.tsserver.setup {
+nvim_lsp.ts_ls.setup {
     init_options = {
       preferences = {
         importModuleSpecifierPreference = "relative"
@@ -183,4 +183,3 @@ nvim_lsp.diagnosticls.setup {
         formatFiletypes = formatFiletypes
     }
 }
-

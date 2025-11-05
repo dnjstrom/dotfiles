@@ -18,13 +18,13 @@ font:
   # The size to use.
   size: 13
   normal:
-    family: Fira Code
+    family: Monaspace Argon
     style: Retina
   bold:
-    family: Fira Code
+    family: Monaspace Argon
     style: Bold
   italic:
-    family: Fira Code
+    family: Monaspace Argon
     style: Retina
 
 schemes:

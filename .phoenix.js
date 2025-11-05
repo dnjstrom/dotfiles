@@ -1,5 +1,5 @@
-const tallMonitor = 1;
-const middleMonitor = 2;
+const tallMonitor = 0;
+const middleMonitor = 1;
 const offMonitor = 0;
 const gutter = 10;
 
@@ -8,7 +8,16 @@ const devLayout = Object.freeze([
     "Google Chrome": (window) => {
       left(window);
     },
+    Arc: (window) => {
+      left(window);
+    },
+    Firefox: (window) => {
+      left(window);
+    },
     Code: (window) => {
+      left(window);
+    },
+    Cursor: (window) => {
       left(window);
     },
     Alacritty: (window) => {
@@ -26,15 +35,27 @@ const devLayout = Object.freeze([
   },
   {
     "Google Chrome": (window) => {
-      moveToScreen(tallMonitor)(window);
+      moveToScreen(middleMonitor)(window);
+      left(window);
+    },
+    Arc: (window) => {
+      moveToScreen(middleMonitor)(window);
+      left(window);
+    },
+    Firefox: (window) => {
+      moveToScreen(middleMonitor)(window);
       left(window);
     },
     Code: (window) => {
-      moveToScreen(tallMonitor)(window);
+      moveToScreen(middleMonitor)(window);
+      left(window);
+    },
+    Cursor: (window) => {
+      moveToScreen(middleMonitor)(window);
       left(window);
     },
     Alacritty: (window) => {
-      moveToScreen(tallMonitor)(window);
+      moveToScreen(middleMonitor)(window);
       right(window);
     },
     "": (window) => {
@@ -42,10 +63,20 @@ const devLayout = Object.freeze([
     },
   },
   {
+    Firefox: (window) => {
+      moveToScreen(tallMonitor)(window);
+    },
+    Arc: (window) => {
+      moveToScreen(tallMonitor)(window);
+    },
     "Google Chrome": (window) => {
       moveToScreen(tallMonitor)(window);
     },
     Code: (window) => {
+      moveToScreen(middleMonitor)(window);
+      left(window);
+    },
+    Cursor: (window) => {
       moveToScreen(middleMonitor)(window);
       left(window);
     },
@@ -58,53 +89,6 @@ const devLayout = Object.freeze([
     },
   },
 ]);
-
-// Unused AtM
-const adminLayout = [
-  {
-    "": (window) => {
-      // Screen 0 is always the primary window
-      moveToScreen(0)(window);
-    },
-  },
-  {
-    "Google Chrome": (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Code: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Alacritty: (window) => {
-      moveToScreen(middleMonitor)(window);
-      right(window);
-    },
-    "": (window) => {
-      moveToScreen(offMonitor)(window);
-    },
-  },
-  {
-    "Google Chrome": (window) => {
-      moveToScreen(middleMonitor)(window);
-    },
-    Jira: (window) => {
-      moveToScreen(tallMonitor)(window);
-      top(window);
-    },
-    Trello: (window) => {
-      moveToScreen(tallMonitor)(window);
-      top(window);
-    },
-    Mail: (window) => {
-      moveToScreen(tallMonitor)(window);
-      bottom(window);
-    },
-    "": (window) => {
-      moveToScreen(offMonitor)(window);
-    },
-  },
-];
 
 const oneThird = (x) => x / 3;
 const twoThirds = (x) => (2 * x) / 3;
@@ -274,6 +258,11 @@ const fullscreen = () => {
 
 const applyLayout = (layoutScheme) => {
   const screens = Screen.all();
+  console.log(
+    "ASDF",
+    screens.length,
+    screens.map((s) => s.identifier())
+  );
   const layout = layoutScheme[screens.length - 1];
 
   console.log(`Layout: "${Object.keys(layout)}"`);
@@ -290,7 +279,7 @@ const applyLayout = (layoutScheme) => {
     });
 };
 
-const schemes = [devLayout /*, adminLayout*/];
+const schemes = [devLayout];
 let currentIndex = -1;
 const toggleLayout = () => {
   const layoutScheme = schemes[(currentIndex += 1) % schemes.length];
@@ -363,7 +352,7 @@ Key.on("e", ["shift", "alt"], () => moveToScreen(offMonitor)(Window.focused()));
 Key.on("h", ["shift", "alt", "ctrl"], moveToRelativeSpace(-1));
 Key.on("l", ["shift", "alt", "ctrl"], moveToRelativeSpace(1));
 
-Key.on("u", ["shift", "alt"], focusApp("Google Chrome"));
-Key.on("i", ["shift", "alt"], focusApp("Code"));
+Key.on("u", ["shift", "alt"], focusApp("Firefox"));
+Key.on("i", ["shift", "alt"], focusApp("Cursor"));
 Key.on("o", ["shift", "alt"], focusApp("Alacritty"));
 Key.on("p", ["shift", "alt"], focusApp("Slack"));
