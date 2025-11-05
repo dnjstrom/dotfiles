@@ -1,0 +1,55 @@
+[terminal.shell]
+args = ["-l", "-c", "tmux new-session -A -s main"]
+program = "/bin/zsh"
+
+[window]
+decorations = "none"
+dynamic_padding = true
+opacity = 1
+
+[window.padding]
+x = 4
+y = 4
+
+[font]
+size = 12
+
+[font.normal]
+family = "Monaspace Argon"
+# style = "Retina"
+
+[font.bold]
+family = "Monaspace Argon"
+# style = "Bold"
+
+[font.italic]
+family = "Monaspace Argon"
+# style = "Retina"
+
+# Theme (Snazzy)
+
+[colors.primary]
+background = '#282a36'
+foreground = '#eff0eb'
+
+[colors.normal]
+black   = '#282a36'
+red     = '#ff5c57'
+green   = '#5af78e'
+yellow  = '#f3f99d'
+blue    = '#57c7ff'
+magenta = '#ff6ac1'
+cyan    = '#9aedfe'
+white   = '#f1f1f0'
+
+[colors.bright]
+black   = '#686868'
+red     = '#ff5c57'
+green   = '#5af78e'
+yellow  = '#f3f99d'
+blue    = '#57c7ff'
+magenta = '#ff6ac1'
+cyan    = '#9aedfe'
+white   = '#f1f1f0'
+
+[terminal]
