@@ -4,10 +4,12 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)";
 
 # Packages
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh;
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh;
 source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh;
 source $(brew --prefix)/etc/profile.d/z.sh;
+
+# Syntax highlighting (Shold be loaded last)
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh;
 
 # Environment variables
 export LC_ALL=en_US.UTF-8
