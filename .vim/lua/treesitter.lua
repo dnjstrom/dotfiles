@@ -1,102 +1,48 @@
-require'nvim-treesitter.configs'.setup {
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/plugged/nvim-treesitter/runtime')
+
+require('nvim-treesitter').setup({
   ensure_installed = {
-    "bash",
-    "c",
-    "clojure",
-    "comment",
-    "css",
-    "dockerfile",
-    "elm",
-    "fish",
-    "go",
-    "graphql",
-    "haskell",
-    "hjson",
-    "html",
-    "http",
-    "java",
-    "javascript",
-    "jsdoc",
-    "json",
-    "json5",
-    "jsonc",
-    "kotlin",
-    "latex",
-    "lua",
-    "make",
-    "markdown",
-    "nix",
-    "pug",
-    "python",
-    "regex",
-    "ruby",
-    "rust",
-    "svelte",
-    "todotxt",
-    "tsx",
-    "typescript",
-    "vim",
-    "vue"
+    "bash", "c", "clojure", "css", "dockerfile", "elm", "fish",
+    "go", "graphql", "haskell", "hjson", "html", "http", "java",
+    "javascript", "jsdoc", "json", "json5", "jsonc", "kotlin", "latex",
+    "lua", "make", "markdown", "nix", "pug", "python", "regex",
+    "ruby", "rust", "svelte", "tsx", "typescript", "vim", "vue"
   },
   auto_install = true,
-  highlight = {
-    enable = true,
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
-  indent = {
-    enable = true
-  }
+})
+
+-- Enable built-in treesitter highlighting for all buffers
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
+
+-- Textobject keymaps via nvim-treesitter-textobjects
+local select = require('nvim-treesitter-textobjects.select')
+
+local keymaps = {
+  af = { query = "@function.outer" },
+  ["if"] = { query = "@function.inner" },
+  ac = { query = "@class.outer" },
+  ic = { query = "@class.inner" },
+  as = { query = "@local.scope", query_group = "locals" },
 }
 
-require'nvim-treesitter.configs'.setup {
-  textobjects = {
-    select = {
-      enable = true,
+for key, opts in pairs(keymaps) do
+  vim.keymap.set({ "x", "o" }, key, function()
+    select.select_textobject(opts.query, opts.query_group or "textobjects")
+  end, { desc = "Treesitter select " .. opts.query })
+end
 
-      -- Automatically jump forward to textobj, similar to targets.vim
-      lookahead = true,
-
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        -- You can optionally set descriptions to the mappings (used in the desc parameter of
-        -- nvim_buf_set_keymap) which plugins like which-key display
-        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-        -- You can also use captures from other query groups like `locals.scm`
-        ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-      },
-      -- You can choose the select mode (default is charwise 'v')
-      --
-      -- Can also be a function which gets passed a table with the keys
-      -- * query_string: eg '@function.inner'
-      -- * method: eg 'v' or 'o'
-      -- and should return the mode ('v', 'V', or '<c-v>') or a table
-      -- mapping query_strings to modes.
-      selection_modes = {
-        ['@parameter.outer'] = 'v', -- charwise
-        ['@function.outer'] = 'V', -- linewise
-        ['@class.outer'] = '<c-v>', -- blockwise
-      },
-      -- If you set this to `true` (default is `false`) then any textobject is
-      -- extended to include preceding or succeeding whitespace. Succeeding
-      -- whitespace has priority in order to act similarly to eg the built-in
-      -- `ap`.
-      --
-      -- Can also be a function which gets passed a table with the keys
-      -- * query_string: eg '@function.inner'
-      -- * selection_mode: eg 'v'
-      -- and should return true or false
-      include_surrounding_whitespace = false,
+require('nvim-treesitter-textobjects').setup({
+  select = {
+    lookahead = true,
+    selection_modes = {
+      ["@parameter.outer"] = "v",
+      ["@function.outer"] = "V",
+      ["@class.outer"] = "<c-v>",
     },
+    include_surrounding_whitespace = false,
   },
-}
+})

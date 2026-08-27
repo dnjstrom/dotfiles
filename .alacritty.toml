@@ -12,44 +12,41 @@ x = 4
 y = 4
 
 [font]
-size = 12
+size = 13
 
 [font.normal]
 family = "Monaspace Argon"
-# style = "Retina"
+style = "Regular"
 
 [font.bold]
 family = "Monaspace Argon"
-# style = "Bold"
+style = "Bold"
 
 [font.italic]
 family = "Monaspace Argon"
-# style = "Retina"
+style = "Italic"
 
-# Theme (Snazzy)
-
+[colors]
 [colors.primary]
-background = '#282a36'
-foreground = '#eff0eb'
-
+background = "0x282828"
+foreground = "0xeeeeee"
 [colors.normal]
-black   = '#282a36'
-red     = '#ff5c57'
-green   = '#5af78e'
-yellow  = '#f3f99d'
-blue    = '#57c7ff'
-magenta = '#ff6ac1'
-cyan    = '#9aedfe'
-white   = '#f1f1f0'
-
+black = "0x282828"
+red = "0xf43753"
+green = "0xc9d05c"
+yellow = "0xffc24b"
+blue = "0xb3deef"
+magenta = "0xd3b987"
+cyan = "0x73cef4"
+white = "0xeeeeee"
 [colors.bright]
-black   = '#686868'
-red     = '#ff5c57'
-green   = '#5af78e'
-yellow  = '#f3f99d'
-blue    = '#57c7ff'
-magenta = '#ff6ac1'
-cyan    = '#9aedfe'
-white   = '#f1f1f0'
+black = "0x4c4c4c"
+red = "0xf43753"
+green = "0xc9d05c"
+yellow = "0xffc24b"
+blue = "0xb3deef"
+magenta = "0xd3b987"
+cyan = "0x73cef4"
+white = "0xfeffff"
 
 [terminal]

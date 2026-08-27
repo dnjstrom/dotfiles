@@ -1,6 +1,10 @@
-[user]
-	name = Daniel Ström
-	email = D@nielstrom.se
+# Default to work config
+[include]
+  path = ~/.gitconfig.work
+
+# Personal projects
+[includeIf "gitdir:**/Code/**/.git"]
+  path = ~/.gitconfig.personal
 
 [alias]
   select-branch = "!git-select-branch"
@@ -13,3 +17,5 @@
 	required = true
 [help]
 	autocorrect = prompt
+[core]
+	excludesFile = ~/.gitignore

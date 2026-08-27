@@ -53,6 +53,8 @@ Plug 'jacoborus/tender.vim'
 Plug 'connorholyday/vim-snazzy'
 Plug 'mhartington/oceanic-next'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'catppuccin/nvim', { 'branch': 'vim', 'as': 'catppuccin' }
+Plug 'jacoborus/tender.vim'
 
 " Highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -69,9 +71,9 @@ call plug#end()
 set termguicolors
 syntax on
 
-let g:oceanic_next_terminal_bold = 1
-"let g:oceanic_next_terminal_italic = 1
-colorscheme OceanicNext
+" let g:oceanic_next_terminal_bold = 1
+" let g:oceanic_next_terminal_italic = 1
+colorscheme tender
 
 " Transparent backgrounds
 "hi Normal guibg=NONE ctermbg=NONE
@@ -83,7 +85,7 @@ colorscheme OceanicNext
 "hi DiffDelete guibg=NONE ctermbg=NONE guifg=#f27983
 "hi SignifySignAdd guibg=NONE ctermbg=NONE guifg=#a6cc70
 
-let g:airline_theme='oceanicnext'
+let g:airline_theme='tender'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -239,7 +241,7 @@ nmap <C-L>     z20<Right>
 "
 lua require("treesitter")
 set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+set foldexpr=v:lua.vim.treesitter.foldexpr()
 set foldlevelstart=1000
 
 lua require("nvim-lspconfig")
