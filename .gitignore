@@ -2,3 +2,5 @@
 DS_Store
 .netrwhist
 *.secret.*
+.claude
+mise.local.toml

@@ -1,6 +1,21 @@
-[user]
-	name = Daniel Ström
-	email = D@nielstrom.se
+# Default to work config
+[include]
+  path = ~/.gitconfig.work
+
+# Personal projects
+[includeIf "gitdir:**/Code/**/.git"]
+  path = ~/.gitconfig.personal
 
 [alias]
   select-branch = "!git-select-branch"
+[push]
+	autoSetupRemote = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[help]
+	autocorrect = prompt
+[core]
+	excludesFile = ~/.gitignore
