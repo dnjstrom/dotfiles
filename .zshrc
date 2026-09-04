@@ -44,6 +44,11 @@ if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
   export PATH="$PNPM_HOME:$PATH"
 fi
 
+# Ollama model configs
+export OLLAMA_CONTEXT_LENGTH=32768
+export OLLAMA_NUM_PARALLEL=1
+export OLLAMA_MAX_LOADED_MODELS=1
+
 # Make option+arrow-key work on iOS 
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
