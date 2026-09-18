@@ -119,12 +119,16 @@
         yank
         open
         vim-tmux-navigator
-        battery
-        cpu
       ];
 
-      # Conventional tmux syntax, maintained as a normal dotfile.
-      extraConfig = builtins.readFile ./tmux.conf;
+      # CPU and battery must load after the status-line placeholders in
+      # tmux.conf so they can interpolate those values.
+      extraConfig = ''
+        ${builtins.readFile ./tmux.conf}
+
+        run-shell ${pkgs.tmuxPlugins.battery.rtp}
+        run-shell ${pkgs.tmuxPlugins.cpu.rtp}
+      '';
     };
 
     programs.neovim = {
