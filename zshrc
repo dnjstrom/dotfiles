@@ -1,0 +1,81 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Prompt theme
+eval "$(starship init zsh)";
+
+# Quick jump to directories
+eval "$(zoxide init zsh --cmd z)"
+
+# Autosuggest abbreviations
+ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
+
+# History substring search (Should be after zsh-syntax-highlighting)
+ bindkey '^[[A' history-substring-search-up
+ bindkey '^[[B' history-substring-search-down
+ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+
+# Environment variables
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export EDITOR=nvim
+
+# Secrets
+# source $HOME/.zshrc.secrets
+
+# Disable Homebrew environment hints
+export HOMEBREW_NO_ENV_HINTS=1
+
+
+# Ollama model configs
+export OLLAMA_CONTEXT_LENGTH=32768
+export OLLAMA_NUM_PARALLEL=1
+export OLLAMA_MAX_LOADED_MODELS=1
+
+# Make option+arrow-key work on iOS 
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
+# Alias for managing config files
+alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME'
+
+# General aliases
+alias vim='nvim'
+alias ls='eza'
+alias tree='eza -T'
+
+# Docker abbreviations
+abbr -f -q d='docker'
+abbr -f -q dc='docker compose' > /dev/null 2>&1
+
+# Git abbreviations
+abbr -f -q ga='git add'
+abbr -f -q gA='git add -A :/'
+abbr -f -q gc='git checkout'
+abbr -f -q gC='git commit'
+abbr -f -q gAC='git add -A :/; git commit'
+abbr -f -q gf='git fetch'
+abbr -f -q gp='git pull --rebase'
+abbr -f -q gP='git push -u origin HEAD'
+abbr -f -q gr='git rebase'
+abbr -f -q gs='git status'
+abbr -f -q gd='git -c color.ui=always status -v -v | less -RX'
+abbr -f -q gl='git log --oneline --graph'
+abbr -f -q gb='git branch'
+abbr -f -q geach='git submodule foreach'
+abbr -f -q grekt='git reset --hard HEAD'
+abbr -f -q gitclean='git checkout main && git fetch -p && git pull && git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d && git fetch --prune'
+abbr -f -q gu='git branch -u origin/$(git rev-parse --abbrev-ref HEAD)'
+
+# Other abbreviations
+abbr -f -q pn='pnpm'
+abbr -f -q scripts='cat package.json | jq .scripts'
+
+# Tmux function
+function tmux_func() {
+  if tmux ls 2>/dev/null | grep -vq attached; then
+    tmux attach
+  else
+    tmux
+  fi
+}
+
