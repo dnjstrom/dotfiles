@@ -86,6 +86,16 @@ require("mason-lspconfig").setup({
 -- Get autocomplete in init.lua
 require("lazydev").setup()
 
+-- Enable lsp and auto formatting for nix-files
+vim.lsp.config('nixd', {
+  settings = {
+    formatting = {
+      command = { 'nixfmt' },
+    },
+  },
+})
+vim.lsp.enable('nixd')
+
 -------------------------------------------------------------------------------
 -- Git integration
 -------------------------------------------------------------------------------

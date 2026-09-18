@@ -6,6 +6,16 @@ eval "$(zoxide init zsh --cmd z)"
 # Autosuggest abbreviations
 ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
 
+
+# Ensure abbreviations are highlighted correctly
+# DOESN'T WORK ATM
+# https://zsh-abbr.olets.dev/integrations.html#zsh-syntax-highlighting
+(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
+  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
+  ZSH_HIGHLIGHT_REGEXP=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=green)
+  ZSH_HIGHLIGHT_REGEXP+=('[[:<:]]('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=green)
+}
+
 # History substring search (Should be after zsh-syntax-highlighting)
  bindkey '^[[A' history-substring-search-up
  bindkey '^[[B' history-substring-search-down

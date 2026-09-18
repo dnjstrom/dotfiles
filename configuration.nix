@@ -1,3 +1,6 @@
+# For docs on the nix-darwin config options
+# https://nix-darwin.github.io/nix-darwin/manual/
+
 { pkgs, ... }:
 
 {
@@ -16,6 +19,10 @@
     _1password-cli
     zoxide
     eza
+
+    # Language servers, etc.
+    nixd
+    nixfmt
   ];
 
   homebrew = {
@@ -43,6 +50,8 @@
       "slack"
       "chatgpt"
       "font-monaspace-nf"
+      "claude"
+      "claude-code"
     ];
   };
 
@@ -57,6 +66,27 @@
   system.defaults = {
     finder.AppleShowAllExtensions = true;
     trackpad.TrackpadThreeFingerDrag = true;
+
+    dock = {
+      magnification = true;
+      orientation = "left";
+      tilesize = 42;
+      largesize = 64;
+      autohide = false;
+      autohide-delay = 0.06;
+      autohide-time-modifier = 0.7;
+
+      persistent-apps = [
+        { app = "/Applications/Firefox.app"; }
+        { app = "/Applications/Alacritty.app"; }
+        { app = "/Applications/Slack.app"; }
+        { app = "/System/Applications/Mail.app"; }
+        { app = "/System/Applications/Calendar.app"; }
+        { app = "/Applications/Figma.app"; }
+        { app = "/Applications/Spotify.app"; }
+        { app = "/System/Applications/Utilities/Activity Monitor.app"; }
+      ];
+    };
   };
 
   security.pam.services.sudo_local = {
@@ -65,6 +95,8 @@
     watchIdAuth = true;
   };
 
+  # For docs on the various home-manager options
+  # https://nix-community.github.io/home-manager/options/home-manager/programs/index.html
   home-manager.users.daniel = {
     # Pick the Home Manager release you begin with; do not casually change it.
     home.stateVersion = "26.05";
@@ -93,11 +125,14 @@
       package = pkgs.zsh;
       enableCompletion = true;
       autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
+      syntaxHighlighting = {
+        enable = true;
+      };
+      zsh-abbr.enable = true;
 
       # Nix-managed plugin loading followed by your normal Zsh config.
+      # source ${pkgs.zsh-abbr}/share/zsh/zsh-abbr/zsh-abbr.zsh
       initContent = ''
-        source ${pkgs.zsh-abbr}/share/zsh/zsh-abbr/zsh-abbr.zsh
         source ${pkgs.zsh-autosuggestions-abbreviations-strategy}/share/zsh/site-functions/zsh-autosuggestions-abbreviations-strategy.zsh
         source ${pkgs.zsh-history-substring-search}/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 
