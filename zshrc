@@ -1,8 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Prompt theme
-eval "$(starship init zsh)";
-
 # Quick jump to directories
 eval "$(zoxide init zsh --cmd z)"
 
@@ -78,4 +75,3 @@ function tmux_func() {
     tmux
   fi
 }
-

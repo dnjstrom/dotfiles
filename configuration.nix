@@ -13,7 +13,6 @@
     gh
     jq
     reattach-to-user-namespace
-    starship
     _1password-cli
     zoxide
     eza
@@ -78,6 +77,15 @@
     programs.fzf = {
       enable = true;
       enableZshIntegration = true;
+    };
+
+    programs.starship = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        add_newline = true;
+        command_timeout = 1000;
+      };
     };
 
     programs.zsh = {
