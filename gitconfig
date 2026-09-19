@@ -1,0 +1,20 @@
+[user]
+	name = Daniel Ström
+	email = dnjstrom@gmail.com
+[alias]
+  select-branch = "!git-select-branch"
+[push]
+	autoSetupRemote = true
+[help]
+	autocorrect = prompt
+[core]
+	excludesFile = ~/.gitignore
+[merge]
+  tool = nvimdiff
+[mergetool]
+  prompt = false
+  keepBackup = false
+[mergetool "nvimdiff"]
+  layout = "LOCAL,BASE,REMOTE / MERGED"
+[init]
+	defaultBranch = main

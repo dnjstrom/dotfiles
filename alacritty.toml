@@ -1,0 +1,100 @@
+[terminal.shell]
+args = ["-l", "-c", "tmux new-session -A -s main"]
+program = "/bin/zsh"
+
+[window]
+decorations = "none"
+dynamic_padding = true
+opacity = 1
+
+[window.padding]
+x = 0
+y = 0
+
+[font]
+size = 13
+
+[font.normal]
+family = "Monaspace Argon NF"
+style = "Regular"
+
+[font.bold]
+family = "Monaspace Argon NF"
+style = "Bold"
+
+[font.italic]
+family = "Monaspace Argon NF"
+style = "Italic"
+
+
+# Nordic theme: https://github.com/AlexvZyl/nordic.nvim
+# Generated using the platforms.sh script
+# Blues have been swapped for better bright/dim colors
+
+# Default colors
+[colors.primary]
+background = '#242933'
+foreground = '#C0C8D8'
+# Bright and dim foreground colors
+dim_foreground = '#434C5E'
+bright_foreground = '#434C5E'
+
+# Search colors
+[colors.search.matches]
+foreground = '#C0C8D8'
+background = '#3B4252'
+
+[colors.search.focused_match]
+foreground = '#C0C8D8'
+background = '#A3BE8C'
+
+[colors.footer_bar]
+foreground = '#C0C8D8'
+background = '#3B4252'
+
+# Keyboard regex hints
+[colors.hints.start]
+foreground = '#C0C8D8'
+background = '#EBCB8B'
+
+[colors.hints.end]
+foreground = '#C0C8D8'
+background = '#3B4252'
+
+# Selection colors
+[colors.selection]
+text = '#C0C8D8'
+background = '#2E3440'
+
+# Normal colors
+[colors.normal]
+black = '#1E222A'
+red = '#BF616A'
+green = '#A3BE8C'
+yellow = '#EBCB8B'
+blue = '#88C0D0'
+magenta = '#B48EAD'
+cyan = '#8FBCBB'
+white = '#D8DEE9'
+
+# Bright colors
+[colors.bright]
+black = '#3B4252'
+red = '#C5727A'
+green = '#B1C89D'
+yellow = '#EFD49F'
+blue = '#81A1C1'
+magenta = '#BE9DB8'
+cyan = '#9FC6C5'
+white = '#E5E9F0'
+
+# Dim colors
+[colors.dim]
+black = '#191D24'
+red = '#B74E58'
+green = '#97B67C'
+yellow = '#E7C173'
+blue = '#5E81AC'
+magenta = '#A97EA1'
+cyan = '#80B3B2'
+white = '#C0C8D8'

@@ -23,6 +23,12 @@
     # Language servers, etc.
     nixd
     nixfmt
+    eslint_d
+    prettierd
+    typescript-go
+    luaPackages.luacheck
+    luaPackages.lua-lsp
+    ruff
   ];
 
   homebrew = {
@@ -65,7 +71,12 @@
 
   system.defaults = {
     finder.AppleShowAllExtensions = true;
-    trackpad.TrackpadThreeFingerDrag = true;
+
+    trackpad = {
+      Clicking = true;
+      TrackpadRightClick = true;
+      TrackpadThreeFingerDrag = true;
+    };
 
     dock = {
       magnification = true;
@@ -82,6 +93,7 @@
         { app = "/Applications/Slack.app"; }
         { app = "/System/Applications/Mail.app"; }
         { app = "/System/Applications/Calendar.app"; }
+        { app = "/Applications/ChatGPT.app"; }
         { app = "/Applications/Figma.app"; }
         { app = "/Applications/Spotify.app"; }
         { app = "/System/Applications/Utilities/Activity Monitor.app"; }
@@ -100,6 +112,18 @@
   home-manager.users.daniel = {
     # Pick the Home Manager release you begin with; do not casually change it.
     home.stateVersion = "26.05";
+
+    programs.git = {
+      enable = true;
+      lfs.enable = true;
+      ignores = [
+        ".DS_Store"
+        "*.secret.*"
+      ];
+      includes = [
+        { path = ./gitconfig; }
+      ];
+    };
 
     programs.direnv = {
       enable = true;
@@ -174,5 +198,11 @@
     # Keep the native configuration writable: Neovim's vim.pack writes its
     # package lock file beside init.lua.
     xdg.configFile."nvim/init.lua".source = ./nvim.lua;
+
+    # Window manager config
+    home.file.".phoenix.js".source = ./phoenix.js;
+
+    # Alacritty config
+    home.file.".alacritty.toml".source = ./alacritty.toml;
   };
 }

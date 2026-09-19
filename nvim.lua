@@ -72,16 +72,10 @@ vim.cmd.colorscheme("nordic")
 -- Language Servers
 -------------------------------------------------------------------------------
 vim.pack.add({
-  "https://github.com/mason-org/mason.nvim",
   "https://github.com/neovim/nvim-lspconfig",
-  "https://github.com/mason-org/mason-lspconfig.nvim",
   "https://github.com/folke/lazydev.nvim",
 })
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "tsc" },
-})
 
 -- Get autocomplete in init.lua
 require("lazydev").setup()
@@ -94,7 +88,8 @@ vim.lsp.config('nixd', {
     },
   },
 })
-vim.lsp.enable('nixd')
+
+vim.lsp.enable({ 'nixd', 'lua-lsp' })
 
 -------------------------------------------------------------------------------
 -- Git integration
@@ -359,11 +354,13 @@ vim.pack.add({ "https://github.com/mfussenegger/nvim-lint" })
 
 local lint = require("lint")
 
+vim.env.ESLINT_D_PPID = vim.fn.getpid()
+
 lint.linters_by_ft = {
-  javascript = { "eslint_d", "eslint" },
-  javascriptreact = { "eslint_d", "eslint" },
-  typescript = { "eslint_d", "eslint" },
-  typescriptreact = { "eslint_d", "eslint" },
+  javascript = { "eslint_d eslint" },
+  javascriptreact = { "eslint_d eslint" },
+  typescript = { "eslint_d eslint" },
+  typescriptreact = { "eslint_d eslint" },
   python = { "ruff" },
   lua = { "luacheck" },
 }
