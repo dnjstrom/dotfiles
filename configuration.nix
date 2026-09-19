@@ -164,6 +164,12 @@
       '';
     };
 
+    # Treat the zsh-abbr config as ephemeral
+    # This means this file won't be managed by nix
+    # Otherwise the file will be recreated and the old be backed up on every config
+    # application, zsh-history-substring-search errors when a backup already exists.
+    xdg.configFile."zsh-abbr/user-abbreviations".enable = false;
+
     programs.tmux = {
       enable = true;
       shell = "${pkgs.zsh}/bin/zsh";
@@ -203,6 +209,6 @@
     home.file.".phoenix.js".source = ./phoenix.js;
 
     # Alacritty config
-    home.file.".alacritty.toml".source = ./alacritty.toml;
+    xdg.configFile."alacritty/alacritty.toml".source = ./alacritty.toml;
   };
 }
