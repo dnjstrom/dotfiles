@@ -11,7 +11,6 @@
     ripgrep
     fd
     fzf
-    bat
     htop
     gh
     jq
@@ -35,9 +34,25 @@
     enable = true;
     enableZshIntegration = true;
 
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "zap"; # Uninstall packages/casks not in Brewfile
+      upgrade = true;
+    };
+
+    global = {
+      brewfile = true;
+    };
+
     taps = [
-      "dnjstrom/git-select-branch"
-      "SoftwareRat/homebrew-unsigned-tap"
+      {
+        name = "SoftwareRat/homebrew-unsigned-tap";
+        trusted = true;
+      }
+      {
+        name = "dnjstrom/git-select-branch";
+        trusted = true;
+      }
     ];
 
     brews = [
@@ -58,7 +73,12 @@
       "font-monaspace-nf"
       "claude"
       "claude-code"
+      "element"
     ];
+  };
+
+  services = {
+    tailscale.enable = true;
   };
 
   # Machine-level Zsh support. Personal Zsh settings live below.
@@ -71,6 +91,8 @@
 
   system.defaults = {
     finder.AppleShowAllExtensions = true;
+    NSGlobalDomain.KeyRepeat = 2;
+    NSGlobalDomain.InitialKeyRepeat = 15;
 
     trackpad = {
       Clicking = true;
@@ -94,7 +116,7 @@
         { app = "/System/Applications/Mail.app"; }
         { app = "/System/Applications/Calendar.app"; }
         { app = "/Applications/ChatGPT.app"; }
-        { app = "/Applications/Figma.app"; }
+        { app = "/Applications/Element.app"; }
         { app = "/Applications/Spotify.app"; }
         { app = "/System/Applications/Utilities/Activity Monitor.app"; }
       ];
@@ -142,6 +164,27 @@
         add_newline = true;
         command_timeout = 1000;
       };
+    };
+
+    programs.bat = {
+      enable = true;
+      config = {
+        theme = "ansi";
+      };
+    };
+
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        syntax-theme = "ansi";
+      };
+    };
+
+    programs.lazygit = {
+      enable = true;
+      enableZshIntegration = true;
+
     };
 
     programs.zsh = {

@@ -3,7 +3,7 @@ args = ["-l", "-c", "tmux new-session -A -s main"]
 program = "/bin/zsh"
 
 [window]
-decorations = "none"
+decorations = "buttonless"
 dynamic_padding = true
 opacity = 1
 
