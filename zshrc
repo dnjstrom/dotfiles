@@ -1,11 +1,5 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# Quick jump to directories
-eval "$(zoxide init zsh --cmd z)"
-
 # Autosuggest abbreviations
 ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
-
 
 # Ensure abbreviations are highlighted correctly
 # DOESN'T WORK ATM
@@ -17,9 +11,9 @@ ZSH_AUTOSUGGEST_STRATEGY=( abbreviations $ZSH_AUTOSUGGEST_STRATEGY )
 }
 
 # History substring search (Should be after zsh-syntax-highlighting)
- bindkey '^[[A' history-substring-search-up
- bindkey '^[[B' history-substring-search-down
- HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # Environment variables
 export LC_ALL=en_US.UTF-8
@@ -42,12 +36,8 @@ export OLLAMA_MAX_LOADED_MODELS=1
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
-# Alias for managing config files
-alias cfg='git --git-dir=$HOME/Code/dotfiles/ --work-tree=$HOME'
-
 # General aliases
 alias vim='nvim'
-alias ls='eza'
 alias tree='eza -T'
 
 # Docker abbreviations

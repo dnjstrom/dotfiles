@@ -7,17 +7,8 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    git
-    ripgrep
-    fd
-    fzf
-    htop
-    gh
-    jq
     reattach-to-user-namespace
     _1password-cli
-    zoxide
-    eza
 
     # Language servers, etc.
     nixd
@@ -72,7 +63,6 @@
       "chatgpt"
       "font-monaspace-nf"
       "claude"
-      "claude-code"
       "element"
     ];
   };
@@ -156,6 +146,17 @@
       enable = true;
       enableZshIntegration = true;
     };
+    programs.gh.enable = true;
+    programs.ripgrep.enable = true;
+    programs.fd.enable = true;
+    programs.htop.enable = true;
+    programs.jq.enable = true;
+    programs.claude-code.enable = true;
+
+    programs.eza = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
     programs.starship = {
       enable = true;
@@ -173,18 +174,25 @@
       };
     };
 
-    programs.delta = {
-      enable = true;
-      enableGitIntegration = true;
-      options = {
-        syntax-theme = "ansi";
-      };
-    };
+    # programs.delta = {
+    #   enable = true;
+    #   enableGitIntegration = true;
+    #   options = {
+    #     syntax-theme = "ansi";
+    #   };
+    # };
 
     programs.lazygit = {
       enable = true;
       enableZshIntegration = true;
+    };
 
+    programs.zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [
+        "--cmd z"
+      ];
     };
 
     programs.zsh = {
@@ -192,17 +200,21 @@
       package = pkgs.zsh;
       enableCompletion = true;
       autosuggestion.enable = true;
-      syntaxHighlighting = {
-        enable = true;
-      };
+      syntaxHighlighting.enable = true;
+      historySubstringSearch.enable = true;
       zsh-abbr.enable = true;
+      plugins = [
+        {
+          name = "autosuggestions-abbreviations-strategy";
+          src = pkgs.zsh-autosuggestions-abbreviations-strategy;
+          file = "share/zsh/site-functions/zsh-autosuggestions-abbreviations-strategy.zsh";
+          completions = [ "share/zsh/site-functions" ];
+        }
+      ];
 
       # Nix-managed plugin loading followed by your normal Zsh config.
       # source ${pkgs.zsh-abbr}/share/zsh/zsh-abbr/zsh-abbr.zsh
       initContent = ''
-        source ${pkgs.zsh-autosuggestions-abbreviations-strategy}/share/zsh/site-functions/zsh-autosuggestions-abbreviations-strategy.zsh
-        source ${pkgs.zsh-history-substring-search}/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
-
         ${builtins.readFile ./zshrc}
       '';
     };
