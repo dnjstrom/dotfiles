@@ -80,9 +80,18 @@
   };
 
   system.defaults = {
+    NSGlobalDomain = {
+      KeyRepeat = 2;
+      InitialKeyRepeat = 15;
+      AppleEnableSwipeNavigateWithScrolls = true;
+      AppleEnableMouseSwipeNavigateWithScrolls = true;
+    };
+
     finder.AppleShowAllExtensions = true;
-    NSGlobalDomain.KeyRepeat = 2;
-    NSGlobalDomain.InitialKeyRepeat = 15;
+
+    magicmouse.MouseButtonMode = "TwoButton";
+
+    loginwindow.GuestEnabled = false;
 
     trackpad = {
       Clicking = true;
@@ -170,17 +179,9 @@
     programs.bat = {
       enable = true;
       config = {
-        theme = "ansi";
+        theme = "Nord";
       };
     };
-
-    # programs.delta = {
-    #   enable = true;
-    #   enableGitIntegration = true;
-    #   options = {
-    #     syntax-theme = "ansi";
-    #   };
-    # };
 
     programs.lazygit = {
       enable = true;

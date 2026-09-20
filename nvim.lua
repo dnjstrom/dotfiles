@@ -63,10 +63,11 @@ vim.opt.inccommand = "split"
 -------------------------------------------------------------------------------
 
 vim.pack.add({
+  "https://github.com/nordtheme/vim",
   "https://github.com/AlexvZyl/nordic.nvim",
 })
 
-vim.cmd.colorscheme("nordic")
+vim.cmd.colorscheme("nord")
 
 -------------------------------------------------------------------------------
 -- Language Servers
@@ -205,7 +206,7 @@ custom_nordic.visual.c.bg = C.bg
 
 require("lualine").setup({
   options = {
-    theme = custom_nordic,
+    theme = "nord",
   },
 })
 
@@ -469,3 +470,10 @@ map({ "n", "x", "o" }, "s", function()
 end, { desc = "Flash" })
 
 vim.o.langmap = "ö[,ä]"
+
+vim.pack.add({
+  { src = 'https://github.com/nvim-mini/mini.nvim', version = 'stable' },
+})
+
+require('mini.comment').setup()
+require('mini.surround').setup()
