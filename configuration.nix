@@ -91,6 +91,7 @@
     NSGlobalDomain = {
       KeyRepeat = 2;
       InitialKeyRepeat = 15;
+      ApplePressAndHoldEnabled = false;
       AppleEnableSwipeNavigateWithScrolls = true;
       AppleEnableMouseSwipeNavigateWithScrolls = true;
     };
@@ -177,6 +178,12 @@
       enable = true;
       enableZshIntegration = true;
       commandName = "kx";
+    };
+
+    programs.kubecolor = {
+      enable = true;
+      enableAlias = true;
+      enableZshIntegration = true;
     };
 
     programs.eza = {
@@ -272,6 +279,9 @@
     programs.neovim = {
       enable = true;
       defaultEditor = true;
+      extraPackages = with pkgs; [
+        tree-sitter
+      ];
     };
 
     # Keep the native configuration writable: Neovim's vim.pack writes its

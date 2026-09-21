@@ -63,6 +63,9 @@ abbr -f -q grekt='git reset --hard HEAD'
 abbr -f -q gitclean='git checkout main && git fetch -p && git pull && git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d && git fetch --prune'
 abbr -f -q gu='git branch -u origin/$(git rev-parse --abbrev-ref HEAD)'
 
+# Kubernetes abbreviations
+abbr -f -q k='kubectl'
+
 # Other abbreviations
 abbr -f -q pn='pnpm'
 abbr -f -q scripts='cat package.json | jq .scripts'

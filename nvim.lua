@@ -70,6 +70,39 @@ vim.pack.add({
 vim.cmd.colorscheme("nord")
 
 -------------------------------------------------------------------------------
+-- Treesitter
+-------------------------------------------------------------------------------
+
+vim.pack.add({
+  "https://github.com/nvim-treesitter/nvim-treesitter",
+})
+
+require("nvim-treesitter").install({
+  "lua",
+  "nix",
+  "vim",
+  "vimdoc",
+  "query",
+  "bash",
+  "json",
+  "yaml",
+  "toml",
+  "markdown",
+  "markdown_inline",
+  "javascript",
+  "typescript",
+  "tsx",
+  "python",
+})
+
+-- Start treesitter highlighting for any filetype with an installed parser.
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    pcall(vim.treesitter.start, args.buf)
+  end,
+})
+
+-------------------------------------------------------------------------------
 -- Language Servers
 -------------------------------------------------------------------------------
 vim.pack.add({
