@@ -96,7 +96,11 @@
       AppleEnableMouseSwipeNavigateWithScrolls = true;
     };
 
-    finder.AppleShowAllExtensions = true;
+    finder = {
+      AppleShowAllExtensions = true;
+      ShowPathbar = true;
+      FXPreferredViewStyle = "clmv";
+    };
 
     magicmouse.MouseButtonMode = "TwoButton";
 
@@ -116,6 +120,8 @@
       autohide = false;
       autohide-delay = 0.06;
       autohide-time-modifier = 0.7;
+      show-recents = false;
+      mru-spaces = false;
 
       persistent-apps = [
         { app = "/Applications/Firefox.app"; }
@@ -128,7 +134,6 @@
         { app = "/Applications/Claude.app"; }
         { app = "/Applications/Element.app"; }
         { app = "/Applications/Spotify.app"; }
-        { app = "/System/Applications/Utilities/Activity Monitor.app"; }
       ];
     };
   };

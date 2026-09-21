@@ -63,8 +63,7 @@ vim.opt.inccommand = "split"
 -------------------------------------------------------------------------------
 
 vim.pack.add({
-  "https://github.com/nordtheme/vim",
-  "https://github.com/AlexvZyl/nordic.nvim",
+  "https://github.com/gbprod/nord.nvim",
 })
 
 vim.cmd.colorscheme("nord")
@@ -100,6 +99,18 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     pcall(vim.treesitter.start, args.buf)
   end,
+})
+
+-------------------------------------------------------------------------------
+-- Keybinding hints
+-------------------------------------------------------------------------------
+
+vim.pack.add({
+  "https://github.com/folke/which-key.nvim",
+})
+
+require("which-key").setup({
+  preset = "modern",
 })
 
 -------------------------------------------------------------------------------
@@ -225,18 +236,6 @@ vim.pack.add({
   "https://github.com/nvim-tree/nvim-web-devicons",
 })
 
-local custom_nordic = require("lualine.themes.nordic")
-local C = require("nordic.colors")
-
--- Remove middle section background
-custom_nordic.command.c.bg = C.bg
-custom_nordic.inactive.c.bg = C.bg
-custom_nordic.insert.c.bg = C.bg
-custom_nordic.normal.c.bg = C.bg
-custom_nordic.replace.c.bg = C.bg
-custom_nordic.terminal.c.bg = C.bg
-custom_nordic.visual.c.bg = C.bg
-
 require("lualine").setup({
   options = {
     theme = "nord",
@@ -326,11 +325,25 @@ map("n", "<leader>e", "<cmd>Neotree toggle<cr>", {
 -- Completion
 -------------------------------------------------------------------------------
 
-vim.pack.add({ { src = "https://github.com/saghen/blink.cmp", version = "v1" } })
+vim.pack.add({
+  { src = "https://github.com/saghen/blink.cmp", version = "v1" },
+  "https://github.com/rafamadriz/friendly-snippets",
+})
 
 require("blink.cmp").setup({
   keymap = {
-    preset = "enter",
+    preset = "super-tab",
+  },
+  completion = {
+    list = {
+      selection = {
+        -- Don't preselect a completion item when a snippet is active, so
+        -- <Tab> jumps to the next snippet placeholder instead of accepting it.
+        preselect = function(ctx)
+          return not require("blink.cmp").snippet_active({ direction = 1 })
+        end,
+      },
+    },
   },
 })
 
