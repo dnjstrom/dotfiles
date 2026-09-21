@@ -10,6 +10,8 @@
     reattach-to-user-namespace
     _1password-cli
 
+    kubectl
+
     # Language servers, etc.
     nixd
     nixfmt
@@ -64,6 +66,12 @@
       "font-monaspace-nf"
       "claude"
       "element"
+      "linear"
+      "aws-vpn-client"
+      "cursor"
+      "freelens"
+      "dbeaver-community"
+      "mongodb-compass"
     ];
   };
 
@@ -114,7 +122,9 @@
         { app = "/Applications/Slack.app"; }
         { app = "/System/Applications/Mail.app"; }
         { app = "/System/Applications/Calendar.app"; }
+        { app = "/Applications/Linear.app"; }
         { app = "/Applications/ChatGPT.app"; }
+        { app = "/Applications/Claude.app"; }
         { app = "/Applications/Element.app"; }
         { app = "/Applications/Spotify.app"; }
         { app = "/System/Applications/Utilities/Activity Monitor.app"; }
@@ -161,6 +171,13 @@
     programs.htop.enable = true;
     programs.jq.enable = true;
     programs.claude-code.enable = true;
+    programs.awscli.enable = true;
+
+    programs.kubeswitch = {
+      enable = true;
+      enableZshIntegration = true;
+      commandName = "kx";
+    };
 
     programs.eza = {
       enable = true;
