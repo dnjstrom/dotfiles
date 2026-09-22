@@ -72,6 +72,7 @@
       "freelens"
       "dbeaver-community"
       "mongodb-compass"
+      "conductor"
     ];
   };
 
