@@ -156,6 +156,7 @@
       ignores = [
         ".DS_Store"
         "*.secret.*"
+        ".direnv/"
       ];
       includes = [
         { path = ./gitconfig; }
