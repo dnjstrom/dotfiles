@@ -164,6 +164,22 @@
       ];
     };
 
+    programs.ssh = {
+      enable = true;
+
+      matchBlocks."github.com" = {
+        identityFile = "~/.ssh/id_ed25519";
+        extraOptions = {
+          AddKeysToAgent = "yes";
+          # Pinned host keys (below) checked first; falls back to the
+          # regular known_hosts so other hosts can still TOFU as normal.
+          UserKnownHostsFile = "~/.ssh/github_known_hosts ~/.ssh/known_hosts";
+        };
+      };
+    };
+
+    home.file.".ssh/github_known_hosts".source = ./known_hosts;
+
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
