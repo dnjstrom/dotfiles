@@ -30,7 +30,7 @@
     onActivation = {
       autoUpdate = true;
       cleanup = "zap"; # Uninstall packages/casks not in Brewfile
-      upgrade = true;
+      upgrade = false;
     };
 
     global = {
