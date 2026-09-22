@@ -26,6 +26,10 @@ export EDITOR=nvim
 # Disable Homebrew environment hints
 export HOMEBREW_NO_ENV_HINTS=1
 
+# fnm (nvm-equivalent node version manager): auto-switches node version
+# on `cd` based on .nvmrc/.node-version, and keeps corepack enabled.
+eval "$(fnm env --use-on-cd --corepack-enabled --shell zsh)"
+
 
 # Ollama model configs
 export OLLAMA_CONTEXT_LENGTH=32768

@@ -169,6 +169,13 @@
       nix-direnv.enable = true;
     };
 
+    programs.uv.enable = true;
+
+    home.packages = [
+      pkgs.just
+      pkgs.fnm
+    ];
+
     programs.fzf = {
       enable = true;
       enableZshIntegration = true;
