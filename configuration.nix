@@ -124,6 +124,8 @@
       show-recents = false;
       mru-spaces = false;
 
+      wvous-tr-corner = 2; # Mission Control
+
       persistent-apps = [
         { app = "/Applications/Firefox.app"; }
         { app = "/Applications/Alacritty.app"; }
