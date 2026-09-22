@@ -160,6 +160,7 @@
         ".DS_Store"
         "*.secret.*"
         ".direnv/"
+        ".claude/settings.local.json"
       ];
       includes = [
         { path = ./gitconfig; }
@@ -169,15 +170,13 @@
     programs.ssh = {
       enable = true;
 
-      matchBlocks."github.com" = {
-        identityFile = "~/.ssh/id_ed25519";
-        extraOptions = {
-          AddKeysToAgent = "yes";
-          UseKeychain = "yes";
-          # Pinned host keys (below) checked first; falls back to the
-          # regular known_hosts so other hosts can still TOFU as normal.
-          UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
-        };
+      settings."github.com" = {
+        IdentityFile = "~/.ssh/id_ed25519";
+        AddKeysToAgent = "yes";
+        UseKeychain = "yes";
+        # Pinned host keys (below) checked first; falls back to the
+        # regular known_hosts so other hosts can still TOFU as normal.
+        UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
       };
     };
 
