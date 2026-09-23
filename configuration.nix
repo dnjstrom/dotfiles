@@ -73,6 +73,7 @@
       "dbeaver-community"
       "mongodb-compass"
       "conductor"
+      "docker"
     ];
   };
 
@@ -203,6 +204,7 @@
     programs.jq.enable = true;
     programs.claude-code.enable = true;
     programs.awscli.enable = true;
+    programs.lazydocker.enable = true;
 
     programs.kubeswitch = {
       enable = true;
