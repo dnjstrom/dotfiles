@@ -17,7 +17,7 @@
     nixfmt
     eslint_d
     prettierd
-    typescript-go
+    typescript
     luaPackages.luacheck
     luaPackages.lua-lsp
     ruff
