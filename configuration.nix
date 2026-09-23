@@ -73,7 +73,7 @@
       "dbeaver-community"
       "mongodb-compass"
       "conductor"
-      "docker"
+      "docker-desktop"
     ];
   };
 
@@ -202,7 +202,13 @@
     programs.fd.enable = true;
     programs.htop.enable = true;
     programs.jq.enable = true;
-    programs.claude-code.enable = true;
+    programs.claude-code = {
+      enable = true;
+      settings = {
+        theme = "auto";
+        permissions.defaultMode = "auto";
+      };
+    };
     programs.awscli.enable = true;
     programs.lazydocker.enable = true;
 

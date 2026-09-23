@@ -145,7 +145,29 @@ vim.lsp.enable({ 'nixd', 'lua-lsp', 'tsc', 'biome', 'ty' })
 vim.pack.add({
   "https://github.com/lewis6991/gitsigns.nvim",
 })
-require("gitsigns").setup()
+require("gitsigns").setup({
+  on_attach = function(bufnr)
+    local gitsigns = require("gitsigns")
+
+    --- Jump to the next hunk, or the next diff change when in diff mode.
+    map("n", "]c", function()
+      if vim.wo.diff then
+        vim.cmd.normal({ "]c", bang = true })
+      else
+        gitsigns.nav_hunk("next")
+      end
+    end, { buffer = bufnr, desc = "Next git hunk" })
+
+    --- Jump to the previous hunk, or the previous diff change when in diff mode.
+    map("n", "[c", function()
+      if vim.wo.diff then
+        vim.cmd.normal({ "[c", bang = true })
+      else
+        gitsigns.nav_hunk("prev")
+      end
+    end, { buffer = bufnr, desc = "Previous git hunk" })
+  end,
+})
 
 vim.pack.add({ "https://github.com/sindrets/diffview.nvim" })
 
@@ -163,11 +185,27 @@ local actions = require("telescope.actions")
 
 require("telescope").setup({
   defaults = {
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",
+    },
+    file_ignore_patterns = { "%.git/" },
     mappings = {
       i = {
         -- Quit telescope on esc instead of entering normal mode
         ["<esc>"] = actions.close,
       },
+    },
+  },
+  pickers = {
+    find_files = {
+      hidden = true,
     },
   },
 })
@@ -245,6 +283,25 @@ require("lualine").setup({
 })
 
 -------------------------------------------------------------------------------
+-- Messages / notifications
+-------------------------------------------------------------------------------
+
+-- Renders cmdline, messages, and notifications as popups so nothing is lost
+-- to cmdheight=0.
+vim.pack.add({
+  "https://github.com/folke/noice.nvim",
+  "https://github.com/MunifTanjim/nui.nvim",
+  "https://github.com/rcarriga/nvim-notify",
+})
+
+require("noice").setup({
+  presets = {
+    bottom_search = true,
+    long_message_to_split = true,
+  },
+})
+
+-------------------------------------------------------------------------------
 -- File tree
 -------------------------------------------------------------------------------
 
@@ -282,16 +339,19 @@ require("neo-tree").setup({
     width = 32,
     mappings = {
       ["e"] = function()
+        require("neo-tree.sources.common.preview").hide()
         vim.api.nvim_exec2("Neotree focus filesystem left", {
           output = true,
         })
       end,
       ["b"] = function()
+        require("neo-tree.sources.common.preview").hide()
         vim.api.nvim_exec2("Neotree focus buffers left", {
           output = true,
         })
       end,
       ["g"] = function()
+        require("neo-tree.sources.common.preview").hide()
         vim.api.nvim_exec2("Neotree focus git_status left", {
           output = true,
         })
@@ -307,10 +367,23 @@ require("neo-tree").setup({
       end,
     },
     {
-      -- Preview file under cursor
+      -- Preview file under cursor. `after_render` fires for every source
+      -- (filesystem/buffers/git_status), including ones re-rendering in the
+      -- background while a different source is on screen, since they all
+      -- share one window but keep separate buffers. Only auto-preview when
+      -- this state's buffer is the one actually visible, otherwise the
+      -- preview's cursor-tracking subscription binds to a hidden buffer and
+      -- crashes on the next cursor move.
       event = "after_render",
       handler = function(state)
-        if not require("neo-tree.sources.common.preview").is_active() then
+        if not (state.winid and vim.api.nvim_win_is_valid(state.winid)) then
+          return
+        end
+        if vim.api.nvim_win_get_buf(state.winid) ~= state.bufnr then
+          return
+        end
+        local preview = require("neo-tree.sources.common.preview")
+        if not preview.is_active() then
           state.config = { use_float = false }
           state.commands.toggle_preview(state)
         end
@@ -514,9 +587,9 @@ vim.pack.add({
 
 -- require("flash").setup()
 
-map({ "n", "x", "o" }, "s", function()
-  require("flash").jump()
-end, { desc = "Flash" })
+-- map({ "n", "x", "o" }, "s", function()
+--   require("flash").jump()
+-- end, { desc = "Flash" })
 
 vim.o.langmap = "ö[,ä]"
 
@@ -526,3 +599,24 @@ vim.pack.add({
 
 require('mini.comment').setup()
 require('mini.surround').setup()
+
+-------------------------------------------------------------------------------
+-- Quick jump
+-------------------------------------------------------------------------------
+
+vim.pack.add({
+    { src = "https://github.com/Isrothy/neominimap.nvim" },
+})
+
+-- The following options are recommended when layout == "float"
+vim.opt.wrap = false
+vim.opt.sidescrolloff = 36 -- Set a large value
+
+--- Put your configuration here
+---@type Neominimap.UserConfig
+vim.g.neominimap = {
+    auto_enable = true,
+    float = {
+        minimap_width = 12,
+    },
+}
