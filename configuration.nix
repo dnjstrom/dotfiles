@@ -134,7 +134,7 @@
         { app = "/System/Applications/Mail.app"; }
         { app = "/System/Applications/Calendar.app"; }
         { app = "/Applications/Linear.app"; }
-        { app = "/Applications/ChatGPT.app"; }
+        { app = "/Applications/Figma.app"; }
         { app = "/Applications/Claude.app"; }
         { app = "/Applications/Element.app"; }
         { app = "/Applications/Spotify.app"; }
