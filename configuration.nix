@@ -267,6 +267,8 @@
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       historySubstringSearch.enable = true;
+      history.share = false;
+      setOptions = [ "INC_APPEND_HISTORY" ];
       zsh-abbr.enable = true;
       plugins = [
         {
