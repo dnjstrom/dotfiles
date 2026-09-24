@@ -192,6 +192,7 @@
     home.packages = [
       pkgs.just
       pkgs.fnm
+      pkgs.postgresql_16 # psql client for connecting to postgres in Docker
     ];
 
     programs.fzf = {
