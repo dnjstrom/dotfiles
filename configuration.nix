@@ -332,5 +332,11 @@
 
     # Alacritty config
     xdg.configFile."alacritty/alacritty.toml".source = ./alacritty.toml;
+
+    # Helper used by tmux.conf's pane-border-format
+    xdg.configFile."tmux/tmux-pane-border.sh" = {
+      source = ./tmux-pane-border.sh;
+      executable = true;
+    };
   };
 }
