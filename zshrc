@@ -83,3 +83,14 @@ function tmux_func() {
     tmux
   fi
 }
+
+# Refresh tmux's pane-border directory title on `cd`. tmux's own hooks
+# (tmux.conf) only fire on pane/window switches, not when a pane's cwd
+# changes while it stays focused, so mirror that here via chpwd.
+function tmux_refresh_pane_border() {
+  [[ -n "$TMUX" ]] || return
+  local win
+  win=$(tmux display-message -p '#{window_id}') || return
+  ~/.config/tmux/tmux-pane-border.sh "$win"
+}
+chpwd_functions+=(tmux_refresh_pane_border)
