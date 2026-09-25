@@ -92,6 +92,9 @@
       # Single-user machine: trust local socket connections instead of the
       # default peer auth, which requires the OS user to match the PG role.
       authentication = "local all all trust";
+      # Without explicit args, initdb falls back to locale C, which yields
+      # SQL_ASCII encoding and breaks any migration that inserts non-ASCII text.
+      initdbArgs = [ "--locale=en_US.UTF-8" "--encoding=UTF8" ];
     };
 
     redis = {
