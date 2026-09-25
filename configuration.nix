@@ -89,6 +89,9 @@
       enable = true;
       package = pkgs.postgresql;
       dataDir = "/Users/daniel/.local/share/postgresql";
+      # Single-user machine: trust local socket connections instead of the
+      # default peer auth, which requires the OS user to match the PG role.
+      authentication = "local all all trust";
     };
 
     redis = {
