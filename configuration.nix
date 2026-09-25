@@ -3,6 +3,26 @@
 
 { pkgs, ... }:
 
+let
+  # Not in nixpkgs and has no tagged releases, so pinned to a commit.
+  # To upgrade: bump rev, then re-fetch the hash with
+  # `nix flake prefetch "https://github.com/accessd/tmux-agent-indicator/archive/<rev>.tar.gz"`
+  tmuxAgentIndicator = pkgs.tmuxPlugins.mkTmuxPlugin {
+    pluginName = "tmux-agent-indicator";
+    rtpFilePath = "agent-indicator.tmux";
+    version = "unstable-2026-08-14";
+    src = pkgs.fetchFromGitHub {
+      owner = "accessd";
+      repo = "tmux-agent-indicator";
+      rev = "553c3cca8bea6fe17e0709ec04f737417de42141";
+      hash = "sha256-VCq7Muvpke9goN1RTcIChW+c/SkFHUSJdoEGKH+CaMQ=";
+    };
+    meta = {
+      homepage = "https://github.com/accessd/tmux-agent-indicator";
+      description = "Visual feedback (pane border/window title/status bar) for AI agent states: running, needs-input, done";
+    };
+  };
+in
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -235,6 +255,31 @@
       settings = {
         theme = "auto";
         permissions.defaultMode = "auto";
+        # Mirrors tmux-agent-indicator's own hooks/claude-hooks.json (plugin
+        # defined below) so it can track Claude's state per pane. The two
+        # UserPromptSubmit hooks run in order: "off" clears any leftover
+        # needs-input/done flag from the previous turn before "running"
+        # re-marks the pane active.
+        hooks =
+          let
+            agentState = "${tmuxAgentIndicator}/share/tmux-plugins/tmux-agent-indicator/scripts/agent-state.sh";
+            hook = state: {
+              hooks = [
+                {
+                  type = "command";
+                  command = "${agentState} --agent claude --state ${state}";
+                }
+              ];
+            };
+          in
+          {
+            UserPromptSubmit = [
+              (hook "off")
+              (hook "running")
+            ];
+            PermissionRequest = [ (hook "needs-input") ];
+            Stop = [ (hook "done") ];
+          };
       };
     };
     programs.awscli.enable = true;
@@ -333,6 +378,7 @@
         open
         vim-tmux-navigator
         tmux-fzf # prefix + F: fuzzy-manage sessions/windows/panes
+        tmuxAgentIndicator # per-pane/window Claude state (running/needs-input/done)
       ];
 
       # CPU and battery must load after the status-line placeholders in
