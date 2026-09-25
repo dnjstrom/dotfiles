@@ -306,11 +306,17 @@
         yank
         open
         vim-tmux-navigator
+        tmux-fzf # prefix + F: fuzzy-manage sessions/windows/panes
       ];
 
       # CPU and battery must load after the status-line placeholders in
       # tmux.conf so they can interpolate those values.
       extraConfig = ''
+        # tmux-fzf's scripts live in the nix store, so tmux.conf (a plain
+        # file with no nix interpolation) references this indirectly via
+        # #{@tmux_fzf_scripts} instead of hardcoding the path itself.
+        set -g @tmux_fzf_scripts "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts"
+
         ${builtins.readFile ./tmux.conf}
 
         run-shell ${pkgs.tmuxPlugins.battery.rtp}
