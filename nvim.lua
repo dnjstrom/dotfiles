@@ -136,7 +136,7 @@ vim.lsp.config('nixd', {
   },
 })
 
-vim.lsp.enable({ 'nixd', 'lua-lsp', 'tsc', 'biome', 'ty' })
+vim.lsp.enable({ 'nixd', 'lua-lsp', 'ts_ls', 'biome', 'ty' })
 
 -------------------------------------------------------------------------------
 -- Git integration

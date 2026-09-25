@@ -38,6 +38,7 @@ in
     eslint_d
     prettierd
     typescript
+    typescript-language-server
     luaPackages.luacheck
     luaPackages.lua-lsp
     ruff
