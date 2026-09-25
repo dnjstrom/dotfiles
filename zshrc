@@ -44,7 +44,7 @@ bindkey "^[[1;3D" backward-word
 alias vim='nvim'
 alias tree='eza -T'
 alias cat='bat'
-alias c = 'claude'
+alias c='claude'
 
 # Docker abbreviations
 abbr -f -q d='docker'
