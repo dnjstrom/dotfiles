@@ -46,10 +46,15 @@
         name = "dnjstrom/git-select-branch";
         trusted = true;
       }
+      {
+        name = "mongodb/brew";
+        trusted = true;
+      }
     ];
 
     brews = [
       "git-select-branch"
+      "mongodb-community"
     ];
 
     casks = [
@@ -79,6 +84,18 @@
 
   services = {
     tailscale.enable = true;
+
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql;
+      dataDir = "/Users/daniel/.local/share/postgresql";
+    };
+
+    redis = {
+      enable = true;
+      dataDir = "/Users/daniel/.local/share/redis";
+      bind = "127.0.0.1";
+    };
   };
 
   # Machine-level Zsh support. Personal Zsh settings live below.
@@ -192,8 +209,11 @@
     home.packages = [
       pkgs.just
       pkgs.fnm
-      pkgs.postgresql_16 # psql client for connecting to postgres in Docker
+      pkgs.mongosh
     ];
+
+    # redis-server refuses to start if its data dir doesn't exist;
+    home.file.".local/share/redis/.keep".text = "";
 
     programs.fzf = {
       enable = true;
