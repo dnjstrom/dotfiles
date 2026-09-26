@@ -12,7 +12,7 @@ x = 0
 y = 0
 
 [font]
-size = 13
+size = 12
 
 [font.normal]
 family = "Monaspace Argon NF"
