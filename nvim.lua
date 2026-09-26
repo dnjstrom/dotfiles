@@ -169,7 +169,33 @@ require("gitsigns").setup({
   end,
 })
 
-vim.pack.add({ "https://github.com/sindrets/diffview.nvim" })
+vim.pack.add({ "https://github.com/esmuellert/codediff.nvim" })
+
+-- nord's DiffAdd/DiffDelete (codediff's default line_insert/line_delete) set
+-- both fg and bg with reverse=true, which replaces syntax colors entirely
+-- instead of just tinting the background. Define bg-only groups instead.
+do
+  local nord_colors = require("nord.colors").palette
+  local nord_utils = require("nord.utils")
+  local editor_bg = nord_colors.polar_night.origin
+
+  vim.api.nvim_set_hl(0, "CodeDiffLineAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffLineDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffCharAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0.2, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffCharDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0.2, editor_bg) })
+end
+
+require("codediff").setup({
+  highlights = {
+    line_insert = "CodeDiffLineAdd",
+    line_delete = "CodeDiffLineDelete",
+    char_insert = "CodeDiffCharAdd",
+    char_delete = "CodeDiffCharDelete",
+  },
+})
+
+map("n", "<leader>gd", "<cmd>CodeDiff<cr>", { desc = "Review changes" })
+map("n", "<leader>gh", "<cmd>CodeDiff history<cr>", { desc = "Git history" })
 
 -------------------------------------------------------------------------------
 -- Filepicker
