@@ -76,6 +76,10 @@ in
     brews = [
       "git-select-branch"
       "mongodb-community"
+      # Recommended deps of mongodb-community — must be listed explicitly or
+      # `cleanup = "zap"` tries (and fails) to remove them as orphaned.
+      "mongosh"
+      "mongodb/brew/mongodb-database-tools"
     ];
 
     casks = [
