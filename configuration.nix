@@ -231,6 +231,12 @@ in
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
       };
+
+      settings."homelab 10.0.1.3 homelab.tail463646.ts.net homelab.local" = {
+        # Pinned host keys (below) checked first; falls back to the
+        # regular known_hosts so other hosts can still TOFU as normal.
+        UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
+      };
     };
 
     programs.direnv = {
