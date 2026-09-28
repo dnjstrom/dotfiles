@@ -192,6 +192,9 @@ require("codediff").setup({
     char_insert = "CodeDiffCharAdd",
     char_delete = "CodeDiffCharDelete",
   },
+  explorer = {
+    auto_open_on_cursor = true,
+  },
 })
 
 map("n", "<leader>gd", "<cmd>CodeDiff<cr>", { desc = "Review changes" })
