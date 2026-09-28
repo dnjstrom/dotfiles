@@ -276,6 +276,15 @@ in
     programs.jq.enable = true;
     programs.claude-code = {
       enable = true;
+      agents = {
+        research-primer = ./agents/research-primer.md;
+        plan-validator = ./agents/plan-validator.md;
+        code-reviewer = ./agents/code-reviewer.md;
+        admin = ./agents/admin.md;
+      };
+      commands = {
+        ship = ./commands/ship.md;
+      };
       settings = {
         theme = "auto";
         permissions.defaultMode = "auto";
