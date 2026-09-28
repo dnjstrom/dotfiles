@@ -237,6 +237,15 @@ in
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
+
+        # The Docker CLI opens a new SSH connection per API request, so a
+        # `docker compose` run against the homelab stack (15 services) bursts
+        # enough connections that sshd drops them, and the deploy fails with
+        # "kex_exchange_identification: read: Connection reset by peer".
+        # Reusing one connection avoids it. See ~/Code/homelab/README.md.
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/cm-%r@%h-%p";
+        ControlPersist = "10m";
       };
     };
 
