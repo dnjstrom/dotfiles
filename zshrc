@@ -42,6 +42,7 @@ bindkey "^[[1;3D" backward-word
 
 # General aliases
 alias vim='nvim'
+alias vi='nvim'
 alias tree='eza -T'
 alias cat='bat'
 alias c='claude'
