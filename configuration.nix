@@ -104,6 +104,7 @@ in
       "mongodb-compass"
       "conductor"
       "docker-desktop"
+      "handy"
     ];
   };
 
