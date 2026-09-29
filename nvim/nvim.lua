@@ -620,7 +620,10 @@ vim.pack.add({
 --   require("flash").jump()
 -- end, { desc = "Flash" })
 
-vim.o.langmap = "ö[,ä]"
+-- Not 'langmap': it's applied per byte during mapping lookup, so multibyte
+-- keys like ö/ä never trigger mappings such as gitsigns' ]c.
+vim.keymap.set({ "n", "x", "o" }, "ö", "[", { remap = true })
+vim.keymap.set({ "n", "x", "o" }, "ä", "]", { remap = true })
 
 vim.pack.add({
   { src = 'https://github.com/nvim-mini/mini.nvim', version = 'stable' },
