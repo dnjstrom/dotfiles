@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
 
+    # Rolling nixpkgs-unstable; FlakeHub publishes it as the 0.1.x series,
+    # while the release branches are 0.<yymm>.x (so plain "0" above resolves
+    # to the newest release, not unstable).
+    nixpkgs-unstable.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+
     nix-darwin = {
       url = "https://flakehub.com/f/nix-darwin/nix-darwin/0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +35,9 @@
       darwinConfigurations."${username}-${system}" =
         inputs.nix-darwin.lib.darwinSystem {
           inherit system;
+
+          # Lets configuration.nix reach other inputs (e.g. nixpkgs-unstable).
+          specialArgs = { inherit inputs; };
 
           modules = [
             inputs.determinate.darwinModules.default

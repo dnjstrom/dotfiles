@@ -1,9 +1,16 @@
 # For docs on the nix-darwin config options
 # https://nix-darwin.github.io/nix-darwin/manual/
 
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
+  # claude-code releases far more often than the nixpkgs release branch picks
+  # it up, so that one package tracks nixpkgs-unstable instead.
+  unstable = import inputs.nixpkgs-unstable {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    config.allowUnfree = true;
+  };
+
   # Not in nixpkgs and has no tagged releases, so pinned to a commit.
   # To upgrade: bump rev, then re-fetch the hash with
   # `nix flake prefetch "https://github.com/accessd/tmux-agent-indicator/archive/<rev>.tar.gz"`
@@ -279,6 +286,7 @@ in
     programs.jq.enable = true;
     programs.claude-code = {
       enable = true;
+      package = unstable.claude-code;
       agents = {
         research-primer = ./claude/agents/research-primer.md;
         plan-validator = ./claude/agents/plan-validator.md;
@@ -302,6 +310,7 @@ in
       settings = {
         theme = "auto";
         permissions.defaultMode = "auto";
+        effortLevel = "high";
         # Mirrors tmux-agent-indicator's own hooks/claude-hooks.json (plugin
         # defined below) so it can track Claude's state per pane. The two
         # UserPromptSubmit hooks run in order: "off" clears any leftover
