@@ -219,7 +219,7 @@ in
         ".claude/settings.local.json"
       ];
       includes = [
-        { path = ./gitconfig; }
+        { path = ./git/gitconfig; }
       ];
     };
 
@@ -233,13 +233,13 @@ in
         UseKeychain = "yes";
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
-        UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
+        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
       };
 
       settings."homelab 10.0.1.3 homelab.tail463646.ts.net homelab.local" = {
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
-        UserKnownHostsFile = "${./known_hosts} ~/.ssh/known_hosts";
+        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
 
         # The Docker CLI opens a new SSH connection per API request, so a
         # `docker compose` run against the homelab stack (15 services) bursts
@@ -280,13 +280,13 @@ in
     programs.claude-code = {
       enable = true;
       agents = {
-        research-primer = ./agents/research-primer.md;
-        plan-validator = ./agents/plan-validator.md;
-        code-reviewer = ./agents/code-reviewer.md;
-        admin = ./agents/admin.md;
+        research-primer = ./claude/agents/research-primer.md;
+        plan-validator = ./claude/agents/plan-validator.md;
+        code-reviewer = ./claude/agents/code-reviewer.md;
+        admin = ./claude/agents/admin.md;
       };
       commands = {
-        ship = ./commands/ship.md;
+        ship = ./claude/commands/ship.md;
       };
       context = ''
         # Global instructions
@@ -400,7 +400,7 @@ in
       # Nix-managed plugin loading followed by your normal Zsh config.
       # source ${pkgs.zsh-abbr}/share/zsh/zsh-abbr/zsh-abbr.zsh
       initContent = ''
-        ${builtins.readFile ./zshrc}
+        ${builtins.readFile ./zsh/zshrc}
       '';
     };
 
@@ -436,7 +436,7 @@ in
         # #{@tmux_fzf_scripts} instead of hardcoding the path itself.
         set -g @tmux_fzf_scripts "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts"
 
-        ${builtins.readFile ./tmux.conf}
+        ${builtins.readFile ./tmux/tmux.conf}
 
         run-shell ${pkgs.tmuxPlugins.battery.rtp}
         run-shell ${pkgs.tmuxPlugins.cpu.rtp}
@@ -453,17 +453,17 @@ in
 
     # Keep the native configuration writable: Neovim's vim.pack writes its
     # package lock file beside init.lua.
-    xdg.configFile."nvim/init.lua".source = ./nvim.lua;
+    xdg.configFile."nvim/init.lua".source = ./nvim/nvim.lua;
 
     # Window manager config
-    home.file.".phoenix.js".source = ./phoenix.js;
+    home.file.".phoenix.js".source = ./phoenix/phoenix.js;
 
     # Alacritty config
-    xdg.configFile."alacritty/alacritty.toml".source = ./alacritty.toml;
+    xdg.configFile."alacritty/alacritty.toml".source = ./alacritty/alacritty.toml;
 
     # Helper used by tmux.conf's pane-border-format
     xdg.configFile."tmux/tmux-pane-border.sh" = {
-      source = ./tmux-pane-border.sh;
+      source = ./tmux/tmux-pane-border.sh;
       executable = true;
     };
   };

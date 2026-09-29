@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+# Helper script to upgrade all flake inputs and apply the new config
+
+nix flake update
+nix develop --command apply-nix-darwin-configuration
