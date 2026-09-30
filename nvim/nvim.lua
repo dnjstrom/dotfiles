@@ -25,6 +25,10 @@ vim.g.maplocalleader = " "
 vim.opt.cursorline = false
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+vim.opt.showbreak = "↪ "
+vim.opt.smoothscroll = true
 vim.o.cmdheight = 0
 
 -- Search
@@ -624,6 +628,17 @@ vim.pack.add({
 -- keys like ö/ä never trigger mappings such as gitsigns' ]c.
 vim.keymap.set({ "n", "x", "o" }, "ö", "[", { remap = true })
 vim.keymap.set({ "n", "x", "o" }, "ä", "]", { remap = true })
+
+-- Move by display line, but keep counts (e.g. 5j from relativenumber) linewise
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+
+-- g0/g$ are screen-relative, so only use them when wrapping
+map({ "n", "x" }, "0", "&wrap ? 'g0' : '0'", { expr = true })
+map({ "n", "x" }, "^", "&wrap ? 'g^' : '^'", { expr = true })
+map({ "n", "x" }, "$", "&wrap ? 'g$' : '$'", { expr = true })
+
+map("n", "<leader>tw", "<cmd>set wrap!<cr>", { desc = "Toggle wrap" })
 
 vim.pack.add({
   { src = 'https://github.com/nvim-mini/mini.nvim', version = 'stable' },
