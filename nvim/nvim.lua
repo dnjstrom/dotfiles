@@ -29,6 +29,14 @@ vim.opt.linebreak = true
 vim.opt.breakindent = true
 vim.opt.showbreak = "↪ "
 vim.opt.smoothscroll = true
+
+-- Wrap prose
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 vim.o.cmdheight = 0
 
 -- Search
@@ -655,15 +663,13 @@ vim.pack.add({
     { src = "https://github.com/Isrothy/neominimap.nvim" },
 })
 
--- The following options are recommended when layout == "float"
-vim.opt.wrap = false
-vim.opt.sidescrolloff = 36 -- Set a large value
-
---- Put your configuration here
+-- Split rather than float, so the minimap never covers (wrapped) text
 ---@type Neominimap.UserConfig
 vim.g.neominimap = {
     auto_enable = true,
-    float = {
+    layout = "split",
+    split = {
         minimap_width = 12,
+        close_if_last_window = true,
     },
 }
