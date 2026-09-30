@@ -1,3 +1,7 @@
+Phoenix.set({
+  openAtLogin: true,
+});
+
 const tallMonitor = 0;
 const middleMonitor = 1;
 const offMonitor = 0;
