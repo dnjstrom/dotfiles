@@ -55,6 +55,11 @@ vim.opt.splitright = true
 -- System clipboard
 vim.opt.clipboard = "unnamedplus"
 
+-- Copy mouse selections on release, like tmux, but keep the selection active
+for _, key in ipairs({ "<LeftRelease>", "<2-LeftRelease>", "<3-LeftRelease>" }) do
+  map("x", key, "ygv", { desc = "Copy mouse selection" })
+end
+
 -- Faster feedback for LSP/plugins
 vim.opt.updatetime = 200
 
