@@ -116,6 +116,19 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -------------------------------------------------------------------------------
+-- Markdown rendering
+-------------------------------------------------------------------------------
+
+-- Renders markdown in the buffer; the cursor line stays raw for editing
+vim.pack.add({
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+})
+
+require("render-markdown").setup({})
+
+map("n", "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown rendering" })
+
+-------------------------------------------------------------------------------
 -- Keybinding hints
 -------------------------------------------------------------------------------
 
