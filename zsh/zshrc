@@ -46,6 +46,8 @@ alias vi='nvim'
 alias tree='eza -T'
 alias cat='bat'
 alias c='claude'
+# Keep the Mac awake on AC power (display may sleep / screen may lock) while Claude runs
+alias claude='caffeinate -s claude'
 
 # Docker abbreviations
 abbr -f -q d='docker'
