@@ -2,6 +2,20 @@
 args = ["-l", "-c", "tmux new-session -A -s main"]
 program = "/bin/zsh"
 
+# Shift+Enter and Option+Enter both send plain \r by default (same as Enter),
+# and tmux can't recover the modifier. Send Meta+Enter instead, which Claude
+# Code treats as "insert newline". Option is bound for Enter only, rather than
+# via option_as_alt, so it still types @ [ ] { } etc. on the Swedish layout.
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Option"
+chars = "\u001b\r"
+
 [window]
 decorations = "buttonless"
 dynamic_padding = true
