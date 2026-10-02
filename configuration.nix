@@ -257,6 +257,20 @@ in
         ControlPath = "~/.ssh/cm-%r@%h-%p";
         ControlPersist = "10m";
       };
+
+      # Local LLM server; see github.com/dnjstrom/macbook-pro-llm-server.
+      # A reinstall regenerates its host key, so update ssh/known_hosts then.
+      settings."llm llm.tail463646.ts.net llm.local" = {
+        User = "daniel";
+        # Keychain-backed passphrase, so non-interactive ssh (scripts,
+        # Claude Code) works without an unlocked agent.
+        IdentityFile = "~/.ssh/id_ed25519";
+        AddKeysToAgent = "yes";
+        UseKeychain = "yes";
+        # Pinned host keys (below) checked first; falls back to the
+        # regular known_hosts so other hosts can still TOFU as normal.
+        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
+      };
     };
 
     programs.direnv = {
