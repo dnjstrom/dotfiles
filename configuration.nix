@@ -195,8 +195,10 @@ in
         { app = "/Applications/Linear.app"; }
         { app = "/Applications/Figma.app"; }
         { app = "/Applications/Claude.app"; }
-        # Safari web app (File > Add to Dock in Safari on messenger.com), not
-        # cask-managed. Must be recreated manually if this path is missing.
+        # Safari web apps (File > Add to Dock in Safari on meet.google.com /
+        # messenger.com), not cask-managed. Must be recreated manually if
+        # these paths are missing.
+        { app = "/Users/daniel/Applications/Google Meet.app"; }
         { app = "/Users/daniel/Applications/Messenger.app"; }
         { app = "/Applications/Element.app"; }
         { app = "/Applications/Spotify.app"; }
