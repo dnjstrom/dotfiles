@@ -331,32 +331,32 @@ const focusApp = (name) => () => {
 
 Key.on("space", ["shift", "alt", "ctrl"], toggleLayout);
 
-Key.on("space", ["shift", "alt"], fullsizeFocusedWindow);
+Key.on("space", ["ctrl", "alt"], fullsizeFocusedWindow);
 Key.on("space", ["shift", "alt", "ctrl", "cmd"], fullsizeAllWindows);
-Key.on("f", ["shift", "alt"], fullscreen);
+Key.on("f", ["ctrl", "alt"], fullscreen);
 
-Key.on("h", ["shift", "alt"], () => left(Window.focused()));
-Key.on("l", ["shift", "alt"], () => right(Window.focused()));
-Key.on("k", ["shift", "alt"], () => top(Window.focused()));
-Key.on("j", ["shift", "alt"], () => bottom(Window.focused()));
+Key.on("h", ["ctrl", "alt"], () => left(Window.focused()));
+Key.on("l", ["ctrl", "alt"], () => right(Window.focused()));
+Key.on("k", ["ctrl", "alt"], () => top(Window.focused()));
+Key.on("j", ["ctrl", "alt"], () => bottom(Window.focused()));
 
 Key.on("q", ["shift", "alt", "ctrl"], () => topleft(Window.focused()));
 Key.on("w", ["shift", "alt", "ctrl"], () => topright(Window.focused()));
 Key.on("a", ["shift", "alt", "ctrl"], () => bottomleft(Window.focused()));
 Key.on("s", ["shift", "alt", "ctrl"], () => bottomright(Window.focused()));
 
-Key.on("q", ["shift", "alt"], () =>
+Key.on("q", ["ctrl", "alt"], () =>
   moveToScreen(tallMonitor)(Window.focused())
 );
-Key.on("w", ["shift", "alt"], () =>
+Key.on("w", ["ctrl", "alt"], () =>
   moveToScreen(middleMonitor)(Window.focused())
 );
-Key.on("e", ["shift", "alt"], () => moveToScreen(offMonitor)(Window.focused()));
+Key.on("e", ["ctrl", "alt"], () => moveToScreen(offMonitor)(Window.focused()));
 
 Key.on("h", ["shift", "alt", "ctrl"], moveToRelativeSpace(-1));
 Key.on("l", ["shift", "alt", "ctrl"], moveToRelativeSpace(1));
 
-Key.on("u", ["shift", "alt"], focusApp("Firefox"));
-Key.on("i", ["shift", "alt"], focusApp("Cursor"));
-Key.on("o", ["shift", "alt"], focusApp("Alacritty"));
-Key.on("p", ["shift", "alt"], focusApp("Slack"));
+Key.on("u", ["ctrl", "alt"], focusApp("Firefox"));
+Key.on("i", ["ctrl", "alt"], focusApp("Cursor"));
+Key.on("o", ["ctrl", "alt"], focusApp("Alacritty"));
+Key.on("p", ["ctrl", "alt"], focusApp("Slack"));
