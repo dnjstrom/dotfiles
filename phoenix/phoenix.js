@@ -142,6 +142,7 @@ const devLayout = Object.freeze({
     "Slack|Messenger|Element": toArea("chat"),
     "": toArea("off"),
   },
+  focus: ["Firefox", "Alacritty"],
 });
 
 const fullsizeLayout = Object.freeze({
@@ -149,6 +150,14 @@ const fullsizeLayout = Object.freeze({
   rules: {
     "": (window) => place(window, slots.full),
   },
+  focus: ["Firefox", "Alacritty"],
+});
+
+// No layout: windows are left where they are, including new ones.
+const freeLayout = Object.freeze({
+  name: "Free",
+  rules: {},
+  focus: [],
 });
 
 // Focus apps one after another, so the last ends up active and the ones
@@ -173,8 +182,9 @@ const flash = (text, screen) =>
     },
   }).show();
 
-const layouts = [devLayout, fullsizeLayout];
-let currentLayout = -1;
+// Start in Free, so nothing moves until a layout is picked.
+const layouts = [devLayout, fullsizeLayout, freeLayout];
+let currentLayout = layouts.indexOf(freeLayout);
 
 const activate = (index) => {
   currentLayout = index;
@@ -183,7 +193,7 @@ const activate = (index) => {
   flash(layouts[index].name, physicalScreens().main);
   setTimeout(() => {
     applyLayout(layouts[index]);
-    focusInOrder(["Firefox", "Alacritty"]);
+    focusInOrder(layouts[index].focus);
   }, 0);
 };
 
@@ -194,16 +204,17 @@ const nextLayout = () => activate((currentLayout + 1) % layouts.length);
 // macOS fires the event several times while it rearranges them.
 let screensChangedTimer;
 Event.on("screensDidChange", () => {
+  if (layouts[currentLayout] === freeLayout) {
+    return;
+  }
+
   clearTimeout(screensChangedTimer);
-  screensChangedTimer = setTimeout(
-    () => activate(Math.max(currentLayout, 0)),
-    1000
-  );
+  screensChangedTimer = setTimeout(() => activate(currentLayout), 1000);
 });
 
-// Windows opened while a layout is active follow its rules too.
+// New windows follow the current layout's rules too.
 Event.on("windowDidOpen", (window) => {
-  if (currentLayout >= 0 && window.isNormal()) {
+  if (window.isNormal()) {
     ruleFor(layouts[currentLayout], window)?.(window);
   }
 });
