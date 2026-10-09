@@ -146,12 +146,18 @@ const fullsizeLayout = Object.freeze({
   "": (window) => place(window, slots.full),
 });
 
+// Focus apps one after another, so the last ends up active and the ones
+// before it stacked beneath it in reverse order.
+const focusInOrder = (names) =>
+  names.forEach((name) => App.get(name)?.focus());
+
 // Cycle through layouts, like tmux's next-layout.
 const layouts = [devLayout, fullsizeLayout];
 let currentLayout = -1;
 const nextLayout = () => {
   currentLayout = (currentLayout + 1) % layouts.length;
   applyLayout(layouts[currentLayout]);
+  focusInOrder(["Firefox", "Alacritty"]);
 };
 
 const fullscreen = () => {
