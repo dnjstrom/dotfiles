@@ -2,97 +2,9 @@ Phoenix.set({
   openAtLogin: true,
 });
 
-const tallMonitor = 0;
-const middleMonitor = 1;
+const mainMonitor = 1;
 const offMonitor = 0;
 const gutter = 10;
-
-const devLayout = Object.freeze([
-  {
-    "Google Chrome": (window) => {
-      left(window);
-    },
-    Arc: (window) => {
-      left(window);
-    },
-    Firefox: (window) => {
-      left(window);
-    },
-    Code: (window) => {
-      left(window);
-    },
-    Cursor: (window) => {
-      left(window);
-    },
-    Alacritty: (window) => {
-      right(window);
-    },
-    Slack: (window) => {
-      bottomright(window);
-    },
-    Messenger: (window) => {
-      bottomright(window);
-    },
-    "": (window) => {
-      topright(window);
-    },
-  },
-  {
-    "Google Chrome": (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Arc: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Firefox: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Code: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Cursor: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Alacritty: (window) => {
-      moveToScreen(middleMonitor)(window);
-      right(window);
-    },
-    "": (window) => {
-      moveToScreen(offMonitor)(window);
-    },
-  },
-  {
-    Firefox: (window) => {
-      moveToScreen(tallMonitor)(window);
-    },
-    Arc: (window) => {
-      moveToScreen(tallMonitor)(window);
-    },
-    "Google Chrome": (window) => {
-      moveToScreen(tallMonitor)(window);
-    },
-    Code: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Cursor: (window) => {
-      moveToScreen(middleMonitor)(window);
-      left(window);
-    },
-    Alacritty: (window) => {
-      moveToScreen(middleMonitor)(window);
-      right(window);
-    },
-    "": (window) => {
-      moveToScreen(offMonitor)(window);
-    },
-  },
-]);
 
 const oneThird = (x) => x / 3;
 const twoThirds = (x) => (2 * x) / 3;
@@ -163,23 +75,6 @@ const bottom = (window) => {
   });
 };
 
-const topleft = (window) => {
-  const screen = window.screen();
-
-  if (!screen) {
-    return;
-  }
-
-  const frame = screen.flippedVisibleFrame();
-
-  window.setFrame({
-    x: frame.x + gutter,
-    y: frame.y + gutter,
-    width: Math.round(twoThirds(frame.width) - 1.5 * gutter),
-    height: Math.round(frame.height / 2 - 1.5 * gutter),
-  });
-};
-
 const topright = (window) => {
   const screen = window.screen();
 
@@ -193,23 +88,6 @@ const topright = (window) => {
     x: Math.round(frame.x + twoThirds(frame.width) + 0.5 * gutter),
     y: frame.y + gutter,
     width: Math.round(oneThird(frame.width) - 1.5 * gutter),
-    height: Math.round(frame.height / 2 - 1.5 * gutter),
-  });
-};
-
-const bottomleft = (window) => {
-  const screen = window.screen();
-
-  if (!screen) {
-    return;
-  }
-
-  const frame = screen.flippedVisibleFrame();
-
-  window.setFrame({
-    x: frame.x + gutter,
-    y: Math.round(frame.y + frame.height / 2 + 0.5 * gutter),
-    width: Math.round(twoThirds(frame.width) - 1.5 * gutter),
     height: Math.round(frame.height / 2 - 1.5 * gutter),
   });
 };
@@ -250,8 +128,6 @@ const fullsize = (window) => {
 
 const fullsizeFocusedWindow = () => fullsize(Window.focused());
 
-const fullsizeAllWindows = () => Screen.main().windows().map(fullsize);
-
 const fullscreen = () => {
   const window = Window.focused();
 
@@ -261,13 +137,7 @@ const fullscreen = () => {
 };
 
 const applyLayout = (layoutScheme) => {
-  const screens = Screen.all();
-  console.log(
-    "ASDF",
-    screens.length,
-    screens.map((s) => s.identifier())
-  );
-  const layout = layoutScheme[screens.length - 1];
+  const layout = layoutScheme[Screen.all().length - 1];
 
   console.log(`Layout: "${Object.keys(layout)}"`);
 
@@ -283,17 +153,15 @@ const applyLayout = (layoutScheme) => {
     });
 };
 
-const schemes = [devLayout];
-let currentIndex = -1;
-const toggleLayout = () => {
-  const layoutScheme = schemes[(currentIndex += 1) % schemes.length];
-  applyLayout(layoutScheme);
-};
+const moveToScreen =
+  (index, place = fullsize) =>
+  (window) => {
+    const screen = Screen.all()[index];
 
-const moveToScreen = (index) => (window) => {
-  const screen = Screen.all()[index];
+    if (!screen) {
+      return;
+    }
 
-  if (screen) {
     const bounds = screen.flippedVisibleFrame();
     window.setFrame({
       x: bounds.x + gutter,
@@ -301,38 +169,43 @@ const moveToScreen = (index) => (window) => {
       width: bounds.width - 2 * gutter,
       height: bounds.height - 2 * gutter,
     });
+    place(window);
 
-    // Hack to make sure the window is on the right monitor before resizing as otherwise the
-    // window size will be constrained to the old screen's size.
-    setTimeout(moveToScreen.bind(null, index, window), 50);
-  }
-};
+    // Place again once macOS has registered the window on the new screen, as
+    // otherwise its size stays constrained to the old screen's size.
+    setTimeout(() => place(window), 50);
+  };
 
-const moveToRelativeSpace = (direction) => () => {
-  const window = Window.focused();
-  const currentSpace = window.screen().currentSpace();
-  const nextSpace =
-    direction >= 0 ? currentSpace.next() : currentSpace.previous();
-  if (currentSpace && nextSpace) {
-    currentSpace.removeWindows([window]);
-    nextSpace.addWindows([window]);
-  }
-};
+const devLayout = Object.freeze([
+  {
+    Alacritty: left,
+    Firefox: right,
+    Slack: bottomright,
+    Messenger: bottomright,
+    "": topright,
+  },
+  {
+    Alacritty: moveToScreen(mainMonitor, left),
+    Firefox: moveToScreen(mainMonitor, right),
+    "": moveToScreen(offMonitor),
+  },
+]);
 
-const focusApp = (name) => () => {
-  const app = App.get(name);
+const fullsizeLayout = Object.freeze([{ "": fullsize }, { "": fullsize }]);
 
-  if (app) {
-    app.focus();
-  }
+// Cycle through layouts, like tmux's next-layout.
+const layouts = [devLayout, fullsizeLayout];
+let currentLayout = -1;
+const nextLayout = () => {
+  currentLayout = (currentLayout + 1) % layouts.length;
+  applyLayout(layouts[currentLayout]);
 };
 
 /* Keybindings */
 
-Key.on("space", ["shift", "alt", "ctrl"], toggleLayout);
+Key.on("space", ["shift", "alt", "ctrl"], nextLayout);
 
 Key.on("space", ["ctrl", "alt"], fullsizeFocusedWindow);
-Key.on("space", ["shift", "alt", "ctrl", "cmd"], fullsizeAllWindows);
 Key.on("f", ["ctrl", "alt"], fullscreen);
 
 Key.on("h", ["ctrl", "alt"], () => left(Window.focused()));
@@ -340,23 +213,7 @@ Key.on("l", ["ctrl", "alt"], () => right(Window.focused()));
 Key.on("k", ["ctrl", "alt"], () => top(Window.focused()));
 Key.on("j", ["ctrl", "alt"], () => bottom(Window.focused()));
 
-Key.on("q", ["shift", "alt", "ctrl"], () => topleft(Window.focused()));
-Key.on("w", ["shift", "alt", "ctrl"], () => topright(Window.focused()));
-Key.on("a", ["shift", "alt", "ctrl"], () => bottomleft(Window.focused()));
-Key.on("s", ["shift", "alt", "ctrl"], () => bottomright(Window.focused()));
-
-Key.on("q", ["ctrl", "alt"], () =>
-  moveToScreen(tallMonitor)(Window.focused())
-);
+Key.on("q", ["ctrl", "alt"], () => moveToScreen(offMonitor)(Window.focused()));
 Key.on("w", ["ctrl", "alt"], () =>
-  moveToScreen(middleMonitor)(Window.focused())
+  moveToScreen(mainMonitor)(Window.focused())
 );
-Key.on("e", ["ctrl", "alt"], () => moveToScreen(offMonitor)(Window.focused()));
-
-Key.on("h", ["shift", "alt", "ctrl"], moveToRelativeSpace(-1));
-Key.on("l", ["shift", "alt", "ctrl"], moveToRelativeSpace(1));
-
-Key.on("u", ["ctrl", "alt"], focusApp("Firefox"));
-Key.on("i", ["ctrl", "alt"], focusApp("Cursor"));
-Key.on("o", ["ctrl", "alt"], focusApp("Alacritty"));
-Key.on("p", ["ctrl", "alt"], focusApp("Slack"));
