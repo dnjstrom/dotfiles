@@ -214,7 +214,7 @@ in
 
   # For docs on the various home-manager options
   # https://nix-community.github.io/home-manager/options/home-manager/programs/index.html
-  home-manager.users.daniel = {
+  home-manager.users.daniel = { config, ... }: {
     # Pick the Home Manager release you begin with; do not casually change it.
     home.stateVersion = "26.05";
 
@@ -488,8 +488,10 @@ in
     # package lock file beside init.lua.
     xdg.configFile."nvim/init.lua".source = ./nvim/nvim.lua;
 
-    # Window manager config
-    home.file.".phoenix.js".source = ./phoenix/phoenix.js;
+    # Window manager config. Linked to the repo checkout rather than copied
+    # into the store, so Phoenix reloads on save without a rebuild.
+    home.file.".phoenix.js".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/phoenix/phoenix.js";
 
     # Alacritty config
     xdg.configFile."alacritty/alacritty.toml".source = ./alacritty/alacritty.toml;
