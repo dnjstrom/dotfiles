@@ -322,6 +322,33 @@ in
       skills = {
         review-pr = ./claude/skills/review-pr;
       };
+      lspServers = {
+        # Bare command on purpose: ty is provided per project by .envrc, so
+        # claude must be launched from a direnv-loaded shell to find it.
+        python = {
+          command = "ty";
+          args = [ "server" ];
+          extensionToLanguage = {
+            ".py" = "python";
+            ".pyi" = "python";
+          };
+        };
+        # Uses the project's own tsserver from node_modules when present.
+        typescript = {
+          command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
+          args = [ "--stdio" ];
+          extensionToLanguage = {
+            ".ts" = "typescript";
+            ".tsx" = "typescriptreact";
+            ".mts" = "typescript";
+            ".cts" = "typescript";
+            ".js" = "javascript";
+            ".jsx" = "javascriptreact";
+            ".mjs" = "javascript";
+            ".cjs" = "javascript";
+          };
+        };
+      };
       context = ''
         # Global instructions
 
