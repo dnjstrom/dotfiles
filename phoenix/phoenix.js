@@ -119,31 +119,36 @@ const toArea = (name) => (window) => {
 
 /* Layouts: app name patterns mapped to placements, first match wins */
 
+const ruleFor = (layout, window) => {
+  const title = window.app().name();
+  const applicableRule = Object.keys(layout.rules).find((rule) =>
+    new RegExp(rule).test(title)
+  );
+  console.log(`Applicable rule for "${title}": "${applicableRule}"`);
+  return layout.rules[applicableRule];
+};
+
 const applyLayout = (layout) => {
   Window.all()
     .filter((window) => window.isVisible())
-    .forEach((window) => {
-      const title = window.app().name();
-      const applicableRule = Object.keys(layout).find((rule) =>
-        new RegExp(rule).test(title)
-      );
-      console.log(`Applicable rule for "${title}": "${applicableRule}"`);
-
-      if (applicableRule !== undefined) {
-        layout[applicableRule](window);
-      }
-    });
+    .forEach((window) => ruleFor(layout, window)?.(window));
 };
 
 const devLayout = Object.freeze({
-  Alacritty: toArea("main"),
-  Firefox: toArea("tall"),
-  "Slack|Messenger|Element": toArea("chat"),
-  "": toArea("off"),
+  name: "Dev",
+  rules: {
+    Alacritty: toArea("main"),
+    Firefox: toArea("tall"),
+    "Slack|Messenger|Element": toArea("chat"),
+    "": toArea("off"),
+  },
 });
 
 const fullsizeLayout = Object.freeze({
-  "": (window) => place(window, slots.full),
+  name: "Fullsize",
+  rules: {
+    "": (window) => place(window, slots.full),
+  },
 });
 
 // Focus apps one after another, so the last ends up active and the ones
@@ -151,14 +156,57 @@ const fullsizeLayout = Object.freeze({
 const focusInOrder = (names) =>
   names.forEach((name) => App.get(name)?.focus());
 
-// Cycle through layouts, like tmux's next-layout.
+// Briefly show a message in the middle of a screen.
+const flash = (text, screen) =>
+  Modal.build({
+    text,
+    duration: 0.5,
+    animationDuration: 0,
+    weight: 20,
+    appearance: "dark",
+    origin: (modal) => {
+      const frame = screen.visibleFrame();
+      return {
+        x: frame.x + (frame.width - modal.width) / 2,
+        y: frame.y + (frame.height - modal.height) / 2,
+      };
+    },
+  }).show();
+
 const layouts = [devLayout, fullsizeLayout];
 let currentLayout = -1;
-const nextLayout = () => {
-  currentLayout = (currentLayout + 1) % layouts.length;
-  applyLayout(layouts[currentLayout]);
-  focusInOrder(["Firefox", "Alacritty"]);
+
+const activate = (index) => {
+  currentLayout = index;
+  // Flash first, and rearrange on the next tick so the notice gets drawn
+  // before the slow work of moving and focusing windows.
+  flash(layouts[index].name, physicalScreens().main);
+  setTimeout(() => {
+    applyLayout(layouts[index]);
+    focusInOrder(["Firefox", "Alacritty"]);
+  }, 0);
 };
+
+// Cycle through layouts, like tmux's next-layout.
+const nextLayout = () => activate((currentLayout + 1) % layouts.length);
+
+// Re-apply the layout when monitors are (dis)connected, once they've settled:
+// macOS fires the event several times while it rearranges them.
+let screensChangedTimer;
+Event.on("screensDidChange", () => {
+  clearTimeout(screensChangedTimer);
+  screensChangedTimer = setTimeout(
+    () => activate(Math.max(currentLayout, 0)),
+    1000
+  );
+});
+
+// Windows opened while a layout is active follow its rules too.
+Event.on("windowDidOpen", (window) => {
+  if (currentLayout >= 0 && window.isNormal()) {
+    ruleFor(layouts[currentLayout], window)?.(window);
+  }
+});
 
 const fullscreen = () => {
   const window = Window.focused();
