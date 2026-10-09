@@ -35,8 +35,8 @@ applying it produces the intended machine state.
   - `phoenix/` — `phoenix.js`, deployed as `~/.phoenix.js`.
   - `alacritty/` — `alacritty.toml`, deployed as
     `~/.config/alacritty/alacritty.toml`.
-  - `claude/` — `agents/*.md` and `commands/*.md`, wired via
-    `programs.claude-code.agents`/`.commands`.
+  - `claude/` — `agents/*.md`, `commands/*.md` and `skills/<name>/`, wired
+    via `programs.claude-code.agents`/`.commands`/`.skills`.
   - `ssh/` — `known_hosts`, referenced via `programs.ssh.settings.*
     .UserKnownHostsFile`.
   - `zsh/` — `zshrc`, inlined via `builtins.readFile` into `programs.zsh`.
