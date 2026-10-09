@@ -246,6 +246,13 @@ in
       };
 
       settings."homelab 10.0.1.3 homelab.tail463646.ts.net homelab.local" = {
+        User = "daniel";
+        # Keychain-backed passphrase, so non-interactive ssh works without an
+        # unlocked agent. Needed even with ControlMaster: past sshd's
+        # MaxSessions, Docker falls back to fresh connections with no TTY.
+        IdentityFile = "~/.ssh/id_ed25519";
+        AddKeysToAgent = "yes";
+        UseKeychain = "yes";
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
