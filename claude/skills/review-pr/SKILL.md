@@ -93,6 +93,12 @@ findings stay separate from speculative ones.
   - Is the approach proportionate to the problem: neither
     over-engineered nor a shortcut that will need redoing?
   - Is responsibility split sensibly, and is logic duplicated?
+  - Changeability: is the change contained behind a clear boundary, so
+    it could later be changed or removed in one place? Watch for new
+    coupling: reaching into another module's internals, feature-specific
+    branches in generic code, or one concern scattered across unrelated
+    files. Judge only what this PR adds, and only where the cost is
+    concrete. Don't ask it to fix existing structure.
   - Does it fit the codebase's and the vendor's intended model?
   - Would a server-side or configuration fix be better?
   - Long-term maintainability.
@@ -146,6 +152,7 @@ Treat reviewer output as claims, not facts. Before drafting comments:
   - security or privacy leaks
   - unverified risky assumptions (phrase these as questions)
   - meaningful test gaps
+  - new coupling that will make the change hard to modify or remove
 - Drop or hold back:
   - renames and style preferences not backed by repo guidance
   - optional refactors and extractions
