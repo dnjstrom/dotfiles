@@ -253,6 +253,9 @@ in
         IdentityFile = "~/.ssh/id_ed25519";
         AddKeysToAgent = "yes";
         UseKeychain = "yes";
+        # Bypass the 1Password agent (see "*" below) so it can't prompt
+        # for approval mid-script; use the local key only.
+        IdentityAgent = "none";
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
@@ -276,9 +279,18 @@ in
         IdentityFile = "~/.ssh/id_ed25519";
         AddKeysToAgent = "yes";
         UseKeychain = "yes";
+        # Bypass the 1Password agent (see "*" below) so it can't prompt
+        # for approval mid-script; use the local key only.
+        IdentityAgent = "none";
         # Pinned host keys (below) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
+      };
+
+      # 1Password SSH agent. Always emitted last by home-manager, so the
+      # host blocks above take precedence for anything they set.
+      settings."*" = {
+        IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
       };
     };
 
