@@ -38,6 +38,7 @@ in
     _1password-cli
 
     kubectl
+    mosh
 
     # Language servers, etc.
     nixd
