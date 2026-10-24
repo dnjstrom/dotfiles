@@ -237,6 +237,10 @@ in
       enable = true;
       enableDefaultConfig = false;
 
+      # UseKeychain is Apple-only; Nix's OpenSSH (which Nix's mosh is
+      # hard-wired to) rejects the whole config without this.
+      extraOptionOverrides.IgnoreUnknown = "UseKeychain";
+
       settings."github.com" = {
         IdentityFile = "~/.ssh/id_ed25519";
         AddKeysToAgent = "yes";
