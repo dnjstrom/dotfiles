@@ -153,13 +153,6 @@ const fullsizeLayout = Object.freeze({
   focus: ["Firefox", "Alacritty"],
 });
 
-// No layout: windows are left where they are, including new ones.
-const freeLayout = Object.freeze({
-  name: "Free",
-  rules: {},
-  focus: [],
-});
-
 // Focus apps one after another, so the last ends up active and the ones
 // before it stacked beneath it in reverse order.
 const focusInOrder = (names) =>
@@ -182,9 +175,8 @@ const flash = (text, screen) =>
     },
   }).show();
 
-// Start in Free, so nothing moves until a layout is picked.
-const layouts = [devLayout, fullsizeLayout, freeLayout];
-let currentLayout = layouts.indexOf(freeLayout);
+const layouts = [devLayout, fullsizeLayout];
+let currentLayout = -1;
 
 const activate = (index) => {
   currentLayout = index;
@@ -199,25 +191,6 @@ const activate = (index) => {
 
 // Cycle through layouts, like tmux's next-layout.
 const nextLayout = () => activate((currentLayout + 1) % layouts.length);
-
-// Re-apply the layout when monitors are (dis)connected, once they've settled:
-// macOS fires the event several times while it rearranges them.
-let screensChangedTimer;
-Event.on("screensDidChange", () => {
-  if (layouts[currentLayout] === freeLayout) {
-    return;
-  }
-
-  clearTimeout(screensChangedTimer);
-  screensChangedTimer = setTimeout(() => activate(currentLayout), 1000);
-});
-
-// New windows follow the current layout's rules too.
-Event.on("windowDidOpen", (window) => {
-  if (window.isNormal()) {
-    ruleFor(layouts[currentLayout], window)?.(window);
-  }
-});
 
 const fullscreen = () => {
   const window = Window.focused();
