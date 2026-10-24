@@ -275,6 +275,21 @@ in
         ControlPersist = "10m";
       };
 
+      # NixOS host taking over the homelab stack; see github.com/dnjstrom/machines.
+      # Same reasoning as the homelab block above. The Docker context uses the
+      # FQDN, so it must be listed here or the ControlMaster won't apply.
+      settings."server 10.0.1.200 server.tail463646.ts.net" = {
+        User = "daniel";
+        IdentityFile = "~/.ssh/id_ed25519";
+        AddKeysToAgent = "yes";
+        UseKeychain = "yes";
+        IdentityAgent = "none";
+        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/cm-%r@%h-%p";
+        ControlPersist = "10m";
+      };
+
       # Local LLM server; see github.com/dnjstrom/macbook-pro-llm-server.
       # A reinstall regenerates its host key, so update ssh/known_hosts then.
       settings."llm llm.tail463646.ts.net llm.local" = {
