@@ -250,11 +250,16 @@ in
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
       };
 
-      settings."homelab 10.0.1.3 homelab.tail463646.ts.net homelab.local" = {
+      # Runs the homelab stack; see github.com/dnjstrom/machines. The Docker
+      # context uses the FQDN, so it must be listed here or none of this
+      # applies to deploys.
+      settings."server 10.0.1.200 server.tail463646.ts.net" = {
         User = "daniel";
         # Keychain-backed passphrase, so non-interactive ssh works without an
         # unlocked agent. Needed even with ControlMaster: past sshd's
         # MaxSessions, Docker falls back to fresh connections with no TTY.
+        # If the keychain loses the entry, `ssh-add --apple-use-keychain
+        # ~/.ssh/id_ed25519` restores it.
         IdentityFile = "~/.ssh/id_ed25519";
         AddKeysToAgent = "yes";
         UseKeychain = "yes";
@@ -266,25 +271,10 @@ in
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
 
         # The Docker CLI opens a new SSH connection per API request, so a
-        # `docker compose` run against the homelab stack (15 services) bursts
-        # enough connections that sshd drops them, and the deploy fails with
+        # `docker compose` run against the homelab stack bursts enough
+        # connections that sshd drops them, and the deploy fails with
         # "kex_exchange_identification: read: Connection reset by peer".
         # Reusing one connection avoids it. See ~/Code/homelab/README.md.
-        ControlMaster = "auto";
-        ControlPath = "~/.ssh/cm-%r@%h-%p";
-        ControlPersist = "10m";
-      };
-
-      # NixOS host taking over the homelab stack; see github.com/dnjstrom/machines.
-      # Same reasoning as the homelab block above. The Docker context uses the
-      # FQDN, so it must be listed here or the ControlMaster won't apply.
-      settings."server 10.0.1.200 server.tail463646.ts.net" = {
-        User = "daniel";
-        IdentityFile = "~/.ssh/id_ed25519";
-        AddKeysToAgent = "yes";
-        UseKeychain = "yes";
-        IdentityAgent = "none";
-        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
         ControlMaster = "auto";
         ControlPath = "~/.ssh/cm-%r@%h-%p";
         ControlPersist = "10m";
