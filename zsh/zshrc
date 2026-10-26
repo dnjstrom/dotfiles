@@ -30,6 +30,9 @@ export HOMEBREW_NO_ENV_HINTS=1
 # on `cd` based on .nvmrc/.node-version, and keeps corepack enabled.
 eval "$(fnm env --use-on-cd --corepack-enabled --shell zsh)"
 
+# dex tab completion and `dex cd`
+command -v dex >/dev/null && source <(dex completion)
+
 
 # Ollama model configs
 export OLLAMA_CONTEXT_LENGTH=32768

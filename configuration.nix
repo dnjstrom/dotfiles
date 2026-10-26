@@ -219,6 +219,9 @@ in
     # Pick the Home Manager release you begin with; do not casually change it.
     home.stateVersion = "26.05";
 
+    # User-installed binaries (e.g. from curl | sh installers)
+    home.sessionPath = [ "$HOME/.local/bin" ];
+
     programs.git = {
       enable = true;
       lfs.enable = true;
