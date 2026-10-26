@@ -31,7 +31,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 eval "$(fnm env --use-on-cd --corepack-enabled --shell zsh)"
 
 # dex tab completion and `dex cd`
-command -v dex >/dev/null && source <(dex completion)
+[ -f "$HOME/Dema.ai/repositories/dex/shell/dex.zsh" ] && source "$HOME/Dema.ai/repositories/dex/shell/dex.zsh"
 
 
 # Ollama model configs
