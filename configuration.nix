@@ -241,34 +241,11 @@ in
       # hard-wired to) rejects the whole config without this.
       extraOptionOverrides.IgnoreUnknown = "UseKeychain";
 
-      settings."github.com" = {
-        IdentityFile = "~/.ssh/id_ed25519";
-        AddKeysToAgent = "yes";
-        UseKeychain = "yes";
-        # Pinned host keys (below) checked first; falls back to the
-        # regular known_hosts so other hosts can still TOFU as normal.
-        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
-      };
-
       # Runs the homelab stack; see github.com/dnjstrom/machines. The Docker
       # context uses the FQDN, so it must be listed here or none of this
       # applies to deploys.
       settings."server 10.0.1.200 server.tail463646.ts.net" = {
         User = "daniel";
-        # Keychain-backed passphrase, so non-interactive ssh works without an
-        # unlocked agent. Needed even with ControlMaster: past sshd's
-        # MaxSessions, Docker falls back to fresh connections with no TTY.
-        # If the keychain loses the entry, `ssh-add --apple-use-keychain
-        # ~/.ssh/id_ed25519` restores it.
-        IdentityFile = "~/.ssh/id_ed25519";
-        AddKeysToAgent = "yes";
-        UseKeychain = "yes";
-        # Bypass the 1Password agent (see "*" below) so it can't prompt
-        # for approval mid-script; use the local key only.
-        IdentityAgent = "none";
-        # Pinned host keys (below) checked first; falls back to the
-        # regular known_hosts so other hosts can still TOFU as normal.
-        UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
 
         # The Docker CLI opens a new SSH connection per API request, so a
         # `docker compose` run against the homelab stack bursts enough
@@ -284,23 +261,24 @@ in
       # A reinstall regenerates its host key, so update ssh/known_hosts then.
       settings."llm llm.tail463646.ts.net llm.local" = {
         User = "daniel";
-        # Keychain-backed passphrase, so non-interactive ssh (scripts,
-        # Claude Code) works without an unlocked agent.
+      };
+
+      # Defaults for every host. Always emitted last by home-manager, so the
+      # host blocks above take precedence for anything they set.
+      settings."*" = {
+        # One local key for everything (GitHub, server, llm, workstation);
+        # its public half is in github.com/dnjstrom/machines ssh/authorized_keys.
+        # The passphrase lives in the macOS keychain, so non-interactive ssh
+        # (scripts, Docker, Claude Code) never prompts. Needed even with
+        # ControlMaster: past sshd's MaxSessions, Docker falls back to fresh
+        # connections with no TTY. If the keychain loses the entry,
+        # `ssh-add --apple-use-keychain ~/.ssh/id_ed25519` restores it.
         IdentityFile = "~/.ssh/id_ed25519";
         AddKeysToAgent = "yes";
         UseKeychain = "yes";
-        # Bypass the 1Password agent (see "*" below) so it can't prompt
-        # for approval mid-script; use the local key only.
-        IdentityAgent = "none";
-        # Pinned host keys (below) checked first; falls back to the
+        # Pinned host keys (ssh/known_hosts) checked first; falls back to the
         # regular known_hosts so other hosts can still TOFU as normal.
         UserKnownHostsFile = "${./ssh/known_hosts} ~/.ssh/known_hosts";
-      };
-
-      # 1Password SSH agent. Always emitted last by home-manager, so the
-      # host blocks above take precedence for anything they set.
-      settings."*" = {
-        IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
       };
     };
 
