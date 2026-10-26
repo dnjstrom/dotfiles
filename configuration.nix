@@ -373,6 +373,13 @@ in
         theme = "auto";
         permissions.defaultMode = "auto";
         effortLevel = "high";
+        # The dex plugin, served straight from the local checkout so it
+        # tracks whatever branch is checked out there.
+        extraKnownMarketplaces.dex.source = {
+          source = "directory";
+          path = "/Users/daniel/Dema.ai/repositories/dex";
+        };
+        enabledPlugins."dex@dex" = true;
         # Mirrors tmux-agent-indicator's own hooks/claude-hooks.json (plugin
         # defined below) so it can track Claude's state per pane. The two
         # UserPromptSubmit hooks run in order: "off" clears any leftover
