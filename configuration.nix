@@ -120,7 +120,7 @@ in
     tailscale.enable = true;
 
     postgresql = {
-      enable = true;
+      enable = false;
       package = pkgs.postgresql_16;
       dataDir = "/Users/daniel/.local/share/postgresql";
       # Single-user machine: trust local socket connections instead of the
