@@ -139,8 +139,13 @@ split the technical review by area across agents.
 Give every reviewer the PR intent, the head SHA, where to read the code,
 the repo guidance files found, and existing review threads. Tell them
 **not** to post anything to GitHub or Linear, and to rank findings by
-severity with file:line, a concrete failure scenario, and a fix. Confirmed
-findings stay separate from speculative ones.
+severity. Each finding needs file:line, the concrete inputs or state that
+trigger it, the consequence, a fix, and how it was established: reproduced
+(test or script), confirmed by reading the code paths end to end, or
+inferred. Confirmed findings stay separate from speculative ones. Tell
+them that a short list, or an empty one, is a good result: they're judged
+on precision, not on how many findings they report, and padding with
+minor points buries the real ones.
 
 ### Core
 
@@ -225,12 +230,40 @@ Treat reviewer output as claims, not facts. Before drafting comments:
   you plan to raise, including any claims about files outside the diff.
   If a claim hinges on runtime behaviour you can't confirm, downgrade it
   to a question or drop it.
+- Try to refute each finding before keeping it. Look for what would make
+  it a non-issue: a guard or validation upstream, callers that never pass
+  the triggering input, a type or framework guarantee, an existing test
+  that covers the case, or a comment or ticket showing the behaviour is
+  intended. When a bug claim can be checked cheaply with a test or a
+  small script (and the trust rule allows running code), check it. If
+  more than a handful of findings remain, or any is high severity and
+  you haven't confirmed it yourself, give the candidates to one fresh
+  `general-purpose` agent whose only job is to refute each one, and
+  drop or downgrade what it refutes after checking its reasoning.
 - Merge duplicates across reviewers, and drop anything already raised in
   existing threads.
 - Check the PR against its stated intent yourself: does it fully deliver
   what the description and ticket ask for, and does it do anything they
   don't? Raise missing pieces or unexplained scope.
-- Keep only what's worth the author's time:
+- Every comment must pass all of these, or it's dropped:
+  - **Concrete:** it names the inputs or state that trigger it and what
+    goes wrong. "This could be a problem" doesn't pass.
+  - **Reachable:** the trigger can happen in practice, given the actual
+    callers, data and deployment, not just in principle.
+  - **Caused by this PR:** the PR introduces it, makes it reachable, or
+    makes it worse. Pre-existing problems the PR only sits near don't
+    count.
+  - **Actionable:** the author can do something specific about it in
+    this PR, or in a named follow-up.
+  - **Would change the outcome:** the author would plausibly change the
+    code in response. If the likely answer is "yes, that's intended" or
+    "doesn't matter here", drop it.
+  - **Worth the cost:** the impact justifies the author's time to read,
+    reply and fix. A rare edge case with trivial impact doesn't.
+- Questions follow the same bar. Ask only when the answer could change
+  the code, and never ask what you can answer by reading the code or
+  the ticket yourself.
+- Of what passes, keep only these kinds of findings:
   - real bugs
   - gaps between the PR and its stated intent
   - misleading user-facing behaviour
@@ -239,6 +272,7 @@ Treat reviewer output as claims, not facts. Before drafting comments:
   - meaningful test gaps
   - new coupling that will make the change hard to modify or remove
 - Drop or hold back:
+  - nits of any kind, unless Daniel asks for them
   - renames and style preferences not backed by repo guidance
   - optional refactors and extractions
   - comment-discipline nits, unless a comment is actively misleading
@@ -247,8 +281,12 @@ Treat reviewer output as claims, not facts. Before drafting comments:
     prebuilt components") — these are team discussions, not review
     comments
 - Keep the review focused: aim for the few comments that matter most. If
-  more than ~10 survive, cut the lowest-value ones, or ask the user.
-- Tell the user what you deliberately left out and why, in a line or two.
+  more than ~6 survive, cut the lowest-value ones, or ask the user. When
+  in doubt, leave it out: a false or low-value comment costs the author
+  more than a missed minor one, and erodes trust in the rest.
+- List what you dropped or held back, one line each with the reason
+  (e.g. "refuted: guarded in `parse()`", "pre-existing", "low impact"),
+  so Daniel can promote any of it.
 
 ## 4. Draft
 
@@ -281,13 +319,15 @@ For each inline comment:
 - **Issues outside the diff:** anchor the comment to the nearest related
   line in the diff, start with "Not changed here, but related:", and name
   the file that needs the change.
-- **Nits:** prefix with "Nit:".
+- **Nits:** only if Daniel asked for them, prefixed with "Nit:".
 
 Show the user:
 
 - the overall verdict (from the architecture reviewer and your own
   read), to inform Daniel's own approve/reject decision
-- the draft as a compact table (file:line → point, severity)
+- the draft as a compact table (file:line → point, severity, and how it
+  was established: reproduced, confirmed or question)
+- the dropped and held-back list from step 3
 
 Save the full comment text to the scratchpad. Ask whether to post.
 
