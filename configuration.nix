@@ -325,6 +325,7 @@ in
       skills = {
         review-pr = ./claude/skills/review-pr;
         request-review = ./claude/skills/request-review;
+        address-pr-comments = ./claude/skills/address-pr-comments;
       };
       lspServers = {
         # Bare command on purpose: ty is provided per project by .envrc, so
@@ -369,6 +370,15 @@ in
         Exception: when Daniel explicitly asks for a draft to post in
         Daniel's own name, write it in Daniel's first-person voice. Tone
         and concision still apply.
+
+        # dex
+
+        `dex`'s dependencies come from the nix flake in `~/Dema.ai`, so
+        it only runs inside that environment. Run it as
+        `direnv exec ~/Dema.ai ~/.local/bin/dex <args>`, from a cwd at or
+        below `~/Dema.ai`. Stack-scoped commands pick the stack from the
+        cwd, so run them from the stack's folder
+        (`~/Dema.ai/workspaces/<stack>`) or pass `--stack <name>`.
       '';
       settings = {
         theme = "auto";
