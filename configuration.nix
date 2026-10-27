@@ -324,6 +324,7 @@ in
       };
       skills = {
         review-pr = ./claude/skills/review-pr;
+        request-review = ./claude/skills/request-review;
       };
       lspServers = {
         # Bare command on purpose: ty is provided per project by .envrc, so
