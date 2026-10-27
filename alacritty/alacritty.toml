@@ -16,6 +16,13 @@ key = "Return"
 mods = "Option"
 chars = "\u001b\r"
 
+# Cmd+L sends F12, which toggles the nested-tmux lock (see tmux.conf).
+# (Cmd+Esc never reaches Alacritty on macOS.)
+[[keyboard.bindings]]
+key = "L"
+mods = "Command"
+chars = "\u001b[24~"
+
 [window]
 decorations = "buttonless"
 dynamic_padding = true
