@@ -226,6 +226,23 @@ Treat reviewer output as claims, not facts. Before drafting comments:
   In local mode, check whether `git rev-parse HEAD` or `git status`
   changed during the review. If they did, re-check the affected
   findings the same way.
+- **Re-review (PR mode, not a self-review):** resolve Daniel's earlier
+  threads that have been suitably addressed, without asking. List them
+  with the GraphQL `reviewThreads` query (thread `id`, `isResolved`, and
+  each comment's author and body). Resolve a thread only when all of
+  these hold:
+  - Daniel started it and it's unresolved. Leave other people's and
+    bots' threads alone.
+  - Reading the code at the current head SHA confirms the problem is
+    gone, by the suggested fix or an equivalent one. A thread being
+    outdated, or the author saying "done", doesn't count by itself.
+  - No reply in the thread pushes back, asks Daniel a question, or
+    defers the fix. Those need Daniel's answer, so leave them open.
+
+  Resolve each one with the `resolveReviewThread` mutation, and post no
+  reply. Do this after the head-SHA check above, and check the head
+  again right before resolving. Partly fixed threads stay open: say
+  what's missing in the summary, not in a new comment.
 - Re-read the cited code at the PR's head commit to confirm each finding
   you plan to raise, including any claims about files outside the diff.
   If a claim hinges on runtime behaviour you can't confirm, downgrade it
@@ -328,6 +345,8 @@ Show the user:
 - the draft as a compact table (file:line → point, severity, and how it
   was established: reproduced, confirmed or question)
 - the dropped and held-back list from step 3
+- on a re-review, each earlier thread of Daniel's: resolved (and by
+  what change), or left open (and why)
 
 Save the full comment text to the scratchpad. Ask whether to post.
 
