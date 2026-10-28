@@ -20,7 +20,7 @@ Daniel names another channel.
 ## Format
 
 ```
-:pr-opened: *<Ticket title>* [<TICKET-ID>](<Linear issue URL>)
+:pr-opened: **<Ticket title>** [<TICKET-ID>](<Linear issue URL>)
 - <What the PR does> [<repo>#<number>](<PR URL>)
 - <What the PR does> [<repo>#<number>](<PR URL>)
 ```
@@ -28,7 +28,7 @@ Daniel names another channel.
 Example:
 
 ```
-:pr-opened: *Visible order types and statuses* [EXP-927](https://linear.app/demaai/issue/EXP-927/visible-order-types-and-statuses)
+:pr-opened: **Visible order types and statuses** [EXP-927](https://linear.app/demaai/issue/EXP-927/visible-order-types-and-statuses)
 - Lets admins change which order types and statuses count in their reports [dema-api#1515](https://github.com/demaai/dema-api/pull/1515)
 - Shows the setting on a new read-only Settings page [dema-app#2244](https://github.com/demaai/dema-app/pull/2244)
 - Counts orders by type and status, including orders the setting hides [statistics-api#1535](https://github.com/demaai/statistics-api/pull/1535)
@@ -37,7 +37,8 @@ Example:
 Rules:
 
 - **First line:** `:pr-opened:`, then the ticket title in bold with
-  single asterisks (`*…*`, Slack bold). Only the title is bold. The
+  double asterisks (`**…**`): `slack_send_message` takes standard
+  Markdown, where single asterisks are italic. Only the title is bold. The
   ticket ID follows as a Markdown link, with no parentheses or colon.
 - **One bullet per PR** (`-`, an unordered list), with no leading repo
   name. Each bullet says in plain words what the PR does for its users,
