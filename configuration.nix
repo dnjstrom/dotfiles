@@ -326,6 +326,7 @@ in
         review-pr = ./claude/skills/review-pr;
         request-review = ./claude/skills/request-review;
         address-pr-comments = ./claude/skills/address-pr-comments;
+        write-pr-description = ./claude/skills/write-pr-description;
       };
       lspServers = {
         # Bare command on purpose: ty is provided per project by .envrc, so
