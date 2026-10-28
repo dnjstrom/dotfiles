@@ -372,6 +372,12 @@ in
         Daniel's own name, write it in Daniel's first-person voice. Tone
         and concision still apply.
 
+        # Pull requests
+
+        Open every PR as a draft (`gh pr create --draft`), and never mark
+        one ready for review (`gh pr ready`): Daniel reviews the draft and
+        marks it ready.
+
         # dex
 
         `dex`'s dependencies come from the nix flake in `~/Dema.ai`, so
