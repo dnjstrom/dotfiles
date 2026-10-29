@@ -6,7 +6,15 @@ argument-hint: <topic, ticket ID, or feature to work on>
 Work through the following pipeline for: $ARGUMENTS
 
 1. **Research** — invoke the `research-primer` subagent on this topic. Wait
-   for its primer before moving on.
+   for its primer before moving on. First make sure it reads current code:
+   - Look for existing work: for dema, `dex ls` for a stack named after
+     the ticket; elsewhere, a branch named after it (local or remote).
+   - Run `git fetch` in each repo likely involved (the stack's
+     worktrees, or the clones in `~/Dema.ai/repositories`), since the
+     subagent runs in plan mode and may not be able to.
+   - Tell the primer which ref to read per repo: the existing stack's or
+     branch's ref if there is one, otherwise `origin/<default>`. Check
+     the primer's "Code researched" section matches before moving on.
 2. **Workspace** — set up where the work happens, using the primer to
    decide which repos it touches. For dema repos (cloned in
    `~/Dema.ai/repositories`), a `dex` stack is the preferred way to

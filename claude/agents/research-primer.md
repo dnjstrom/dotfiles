@@ -25,6 +25,24 @@ check what's connected before assuming a source doesn't apply:
 If a tool you need isn't loaded yet, use ToolSearch to find and load it
 before assuming a source is unavailable.
 
+## Which code to read
+
+Research the most recent applicable code, not whatever happens to be
+checked out. Before reading code, settle on a ref per repo:
+
+- If you were given a ref (branch, stack, or SHA), use it.
+- Otherwise, if a branch for this work already exists (e.g. named after
+  the ticket ID — check `git branch -a --list '*<TICKET-ID>*'`), use it.
+- Otherwise use the remote default branch (`origin/HEAD`, usually
+  `origin/main`). Run `git fetch` first; if it can't run, use the
+  existing remote-tracking ref and note how old it is (last fetch is
+  the mtime of `.git/FETCH_HEAD`) under **Gaps**.
+
+Read that ref without touching the working tree: `git show <ref>:<path>`,
+`git grep <pattern> <ref>`, `git log <ref>`. Read working-tree files
+directly only when they are on that ref (`git rev-parse HEAD` matches it
+and the tree is clean).
+
 ## Ground rules
 
 - **Stay neutral.** Report what stakeholders said, what the ticket says, what
@@ -46,10 +64,12 @@ before assuming a source is unavailable.
 Structure the primer as:
 
 1. **Topic** — one line restating what was asked.
-2. **Known context** — bullets grouped by source (Linear / feedback / code /
+2. **Code researched** — per repo: ref and short SHA read, and whether it
+   came from a fresh fetch.
+3. **Known context** — bullets grouped by source (Linear / feedback / code /
    docs), each with attribution.
-3. **Open questions / contradictions** — anything unresolved or conflicting.
-4. **Gaps** — sources checked but empty, or sources unavailable.
+4. **Open questions / contradictions** — anything unresolved or conflicting.
+5. **Gaps** — sources checked but empty, or sources unavailable.
 
 Keep it a primer, not a report: dense and skimmable, no recommendations
 section.
