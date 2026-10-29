@@ -17,9 +17,6 @@ settled, so the work is limited to what the comments ask for.
   SHA (`headRefOid`), linked issues, and CI status.
 - If the PR's author isn't Daniel (`gh api user --jq .login`), stop and
   ask before going on: this skill pushes to the PR's branch.
-- Name the tmux window after the topic, as in the `review-pr` skill:
-  `tmux rename-window -t "$TMUX_PANE" "<topic>"` when `$TMUX` is set,
-  with a short lowercase label such as `comments auth retries`.
 - Gather intent: the PR description and its linked Linear ticket. Every
   comment is judged against what the PR is meant to do.
 - Find repo guidance: root and touched-directory `CLAUDE.md`/`AGENTS.md`

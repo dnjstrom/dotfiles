@@ -24,12 +24,6 @@ Pick the mode from the argument:
   (`statusCheckRollup`), and whether it comes from a fork. The head SHA
   is `headRefOid`. Everything below reads the code at that SHA, and step
   3 checks it again before any findings are shown.
-- Name the tmux window after the topic: if `$TMUX` is set, run
-  `tmux rename-window -t "$TMUX_PANE" "<topic>"`, where `<topic>` is a
-  short lowercase label of 2–4 words from the PR title (e.g.
-  `review auth retries`). Targeting `$TMUX_PANE` renames the window this
-  session runs in, not whichever window is focused. Skip silently
-  outside tmux.
 - Decide whether this is a **self-review**: the PR author's login equals
   `gh api user --jq .login`. In a self-review, never post anything to
   GitHub (no reviews, comments, reactions or approvals), even if asked
@@ -111,8 +105,6 @@ Local mode is always a self-review: nothing goes to GitHub or Linear.
   local state as it is. Don't pull on your own.
 - Never modify the user's checkout: no staging, committing, stashing,
   checkout, or reformatting. Reviewers get the same rule.
-- Name the tmux window as in PR mode, with the topic taken from the
-  branch name and commit subjects.
 - Gather intent from commit messages, a Linear ticket referenced by the
   branch name or commits, and this conversation. If an open PR already
   exists for the branch (`gh pr view <branch>`), use its description
