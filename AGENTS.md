@@ -36,7 +36,9 @@ applying it produces the intended machine state.
   - `alacritty/` — `alacritty.toml`, deployed as
     `~/.config/alacritty/alacritty.toml`.
   - `claude/` — `agents/*.md`, `commands/*.md` and `skills/<name>/`, wired
-    via `programs.claude-code.agents`/`.commands`/`.skills`.
+    via `programs.claude-code.agents`/`.commands`/`.skills`, plus
+    `agent-state-hook.sh`, built into the script behind
+    `programs.claude-code.settings.hooks`.
   - `ssh/` — `known_hosts`, referenced via `programs.ssh.settings.*
     .UserKnownHostsFile`.
   - `zsh/` — `zshrc`, inlined via `builtins.readFile` into `programs.zsh`.

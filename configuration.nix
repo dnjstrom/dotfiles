@@ -414,15 +414,27 @@ in
         # defined below) so it can track Claude's state per pane. The two
         # UserPromptSubmit hooks run in order: "off" clears any leftover
         # needs-input/done flag from the previous turn before "running"
-        # re-marks the pane active.
+        # re-marks the pane active. The Subagent* hooks let Stop hold off on
+        # "done" while background subagents are still running (see
+        # claude/agent-state-hook.sh).
         hooks =
           let
-            agentState = "${tmuxAgentIndicator}/share/tmux-plugins/tmux-agent-indicator/scripts/agent-state.sh";
+            agentStateHook = pkgs.writeShellApplication {
+              name = "claude-agent-state-hook";
+              runtimeInputs = [ pkgs.jq ];
+              text =
+                builtins.replaceStrings
+                  [ "@agentState@" ]
+                  [
+                    "${tmuxAgentIndicator}/share/tmux-plugins/tmux-agent-indicator/scripts/agent-state.sh"
+                  ]
+                  (builtins.readFile ./claude/agent-state-hook.sh);
+            };
             hook = state: {
               hooks = [
                 {
                   type = "command";
-                  command = "${agentState} --agent claude --state ${state}";
+                  command = "${agentStateHook}/bin/claude-agent-state-hook ${state}";
                 }
               ];
             };
@@ -433,6 +445,8 @@ in
               (hook "running")
             ];
             PermissionRequest = [ (hook "needs-input") ];
+            SubagentStart = [ (hook "subagent-start") ];
+            SubagentStop = [ (hook "subagent-stop") ];
             Stop = [ (hook "done") ];
           };
       };
