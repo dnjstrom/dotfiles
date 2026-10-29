@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Review a GitHub pull request — run technical and architecture reviewers in parallel (plus security and data/compatibility specialists when the diff warrants), verify and filter their findings, draft inline review comments, and post them as a single GitHub review (comment-only unless Daniel explicitly asks to approve or request changes) once approved. For Daniel's own PRs, and for local branches not yet pushed, findings are presented locally and nothing is posted. Use when asked to review a PR (URL or number), or Daniel's local branch or uncommitted work before pushing.
+description: Review a GitHub pull request — run technical and architecture reviewers in parallel (plus security and data/compatibility specialists when the diff warrants), verify and filter their findings, draft inline review comments, and post them as a single GitHub review (comment-only unless Daniel explicitly asks to approve or request changes) once approved. For Daniel's own PRs, and for local branches not yet pushed, the review is stricter, findings are presented locally as blockers and suggestions, and nothing is posted. Use when asked to review a PR (URL or number), or Daniel's local branch or uncommitted work before pushing. Also the review step of `/ship`'s and `address-pr-comments`' review loops.
 argument-hint: [PR URL | owner/repo#number | local branch | repo path]
 ---
 
@@ -16,6 +16,12 @@ Pick the mode from the argument:
   Follow "Local mode" at the end of this section instead, then continue
   from step 2. Throughout the rest of this skill, "the PR" means the
   branch's changes against its base, and "head" means the working tree.
+
+A **self-review** is held to a higher bar than someone else's PR: more
+reviewers, and every verified finding is reported, small ones included,
+because Daniel or a review loop fixes them before anyone else sees the
+code. Someone else's PR gets the pragmatic bar: only the few comments
+worth the author's time. Steps 2–4 say where the two differ.
 
 ### PR mode
 
@@ -116,17 +122,42 @@ Local mode is always a self-review: nothing goes to GitHub or Linear.
 - Give reviewers the repo path, the merge-base SHA, and whether
   uncommitted and untracked files are in scope, instead of a head SHA.
 
+### Called from a review loop
+
+`/ship` step 7 and `address-pr-comments` step 7 run this skill once per
+round of a review loop (`/ship`, *Review loops*). The caller passes the
+round number, the intent (the approved plan, or the comments being
+addressed), the diff base if it isn't the merge base, and, from round 2
+on, the previous round's findings. In that case:
+
+- Use local mode, with the caller's diff base if given. Don't ask about
+  scope or intent; the caller has settled both. Still stop and ask if the
+  remote has commits that aren't local.
+- **Round 1** runs every reviewer step 2 calls for.
+- **Later rounds** review only the changes since the previous round,
+  plus whether its blockers were resolved. Rerun only the reviewers that
+  raised blockers, giving each its own earlier findings, and check the
+  rest of the new changes yourself against the core checklists. Run the
+  full set again only if the changes since the previous round go beyond
+  fixing its findings.
+- Skip the offer to apply fixes at the end of step 4: return the
+  findings to the caller, which fixes them and starts the next round.
+
 ## 2. Run the reviewers
 
 Two core reviewers always run. Specialists join only when the diff touches
 their area. Decide which ones from the changed files and their contents,
 and tell the user which were triggered and why.
 
-Scale to the PR. For a small, low-risk change (roughly <50 changed lines,
-no shared code, no specialist triggers), review it yourself, without
-agents, against the core checklists below. Otherwise launch all chosen
-reviewers in a single message, as background agents. For very large PRs,
-split the technical review by area across agents.
+Scale to the PR. For someone else's small, low-risk change (roughly <50
+changed lines, no shared code, no specialist triggers), review it
+yourself, without agents, against the core checklists below. Otherwise,
+and always for a self-review, launch all chosen reviewers in a single
+message, as background agents. For very large PRs, split the technical
+review by area across agents.
+
+In a self-review, trigger a specialist when the diff plausibly touches
+its area, not only when it clearly does.
 
 Give every reviewer the PR intent, the head SHA, where to read the code,
 the repo guidance files found, and existing review threads. Tell them
@@ -137,7 +168,9 @@ trigger it, the consequence, a fix, and how it was established: reproduced
 inferred. Confirmed findings stay separate from speculative ones. Tell
 them that a short list, or an empty one, is a good result: they're judged
 on precision, not on how many findings they report, and padding with
-minor points buries the real ones.
+minor points buries the real ones. In a self-review, ask them to also
+report minor points (nits, small cleanups, comment discipline), but in a
+separate list below the real findings.
 
 ### Core
 
@@ -155,11 +188,13 @@ minor points buries the real ones.
   - Test quality, including tests that only test mocks, and missing cases.
   - Run the relevant tests and type check if feasible (see trust rule
     above). Note CI failures and whether they relate to the change.
-- **Architecture reviewer** (`code-reviewer`). Brief it explicitly for an
-  external PR, because the agent's defaults assume reviewing your own
-  work against a plan. There's no plan: the PR description and ticket
-  are the intent. Skip comment-discipline findings and the "what's solid"
-  section.
+- **Architecture reviewer** (`code-reviewer`). In a self-review, run it
+  with its defaults, including comment discipline, against the plan
+  when there is one, otherwise against the intent gathered in step 1.
+  Brief it explicitly for someone else's PR, because the agent's
+  defaults assume reviewing your own work against a plan. There's no
+  plan: the PR description and ticket are the intent. Skip
+  comment-discipline findings and the "what's solid" section.
   - Does it fix the root cause or patch a symptom?
   - Is the approach proportionate to the problem: neither
     over-engineered nor a shortcut that will need redoing?
@@ -254,6 +289,16 @@ Treat reviewer output as claims, not facts. Before drafting comments:
 - Check the PR against its stated intent yourself: does it fully deliver
   what the description and ticket ask for, and does it do anything they
   don't? Raise missing pieces or unexplained scope.
+- **Self-review:** sort what survives refutation instead of cutting it.
+  - **Blockers:** findings that are concrete, reachable, caused by this
+    change and actionable (as defined below) and belong to one of the
+    kinds kept for external PRs below, plus the architecture reviewer's
+    blockers.
+  - **Suggestions:** every other verified finding, nits, optional
+    refactors and comment-discipline findings included. Drop only what
+    was refuted, what's pre-existing, and broad tech-strategy debates.
+  - There's no cap on the number of findings. Skip the rest of this
+    step except the dropped list at the end.
 - Every comment must pass all of these, or it's dropped:
   - **Concrete:** it names the inputs or state that trigger it and what
     goes wrong. "This could be a problem" doesn't pass.
@@ -300,12 +345,21 @@ Treat reviewer output as claims, not facts. Before drafting comments:
 ## 4. Draft
 
 **Self-review (including all of local mode):** skip the GitHub-specific rules below (voice, anchoring,
-the scratchpad file, asking to post) and skip step 5. Present the
-findings in the terminal instead, ranked by severity, each with
-file:line, the problem and its concrete failure scenario, and a fix.
-Include the overall verdict and what was deliberately left out. Offer to
-apply fixes in the checkout the PR branch lives in, but don't edit
-anything unasked.
+the scratchpad file, asking to post) and skip step 5. Present in the
+terminal instead:
+
+1. **Verdict:** net-positive / net-positive with required fixes / needs
+   rework, in one line. Any blocker means it isn't plain net-positive.
+2. **Blockers,** ranked by severity, each with file:line, the problem,
+   its concrete failure scenario, how it was established, and a fix. In
+   later loop rounds, also each previous blocker: resolved, or still
+   open and why.
+3. **Suggestions,** each with file:line and a fix.
+4. **Assumptions, risks and missing decisions** the change surfaced.
+5. **Dropped** findings, from step 3.
+
+Offer to apply fixes in the checkout the PR branch lives in, but don't
+edit anything unasked.
 
 Otherwise, all feedback goes in **inline comments**. The review body stays empty.
 

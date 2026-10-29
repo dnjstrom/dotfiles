@@ -118,10 +118,11 @@ tests, type check and linters again.
 ## 7. Review
 
 Run the new commits (the diff since the head before step 6) through a
-review loop with the `code-reviewer` subagent, exactly as `/ship` step 7
-and its *Review loops* section describe, including the 10-round abort.
-Give the reviewer the comments being addressed, so it can check the fixes
-actually answer them.
+review loop with the `review-pr` skill, exactly as `/ship` step 7 and
+its *Review loops* section describe, including the 10-round abort. Pass
+the head before step 6 as the diff base, and the comments being
+addressed as the intent, so the review checks the fixes actually answer
+them.
 
 ## 8. Push
 

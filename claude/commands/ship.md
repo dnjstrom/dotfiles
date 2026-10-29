@@ -62,14 +62,14 @@ Work through the following pipeline for: $ARGUMENTS
    `admin` in send mode to create the approved sub-issues, and use each
    one as its PR's ticket from then on.
 6. **Implement** — once approved, implement the plan normally.
-7. **Review** — run the diff through a review loop with the
-   `code-reviewer` subagent. A round requests a major change when it
-   reports any blockers (verdict "net-positive with required fixes" or
-   "needs rework"); fix them and review again, giving the reviewer the
-   previous round's findings so it checks they were resolved instead of
-   starting over. Apply agreed suggestions along the way, but
-   suggestions alone don't trigger another round. Report blockers and
-   suggestions each round.
+7. **Review** — run the branch through a review loop, each round a run
+   of the `review-pr` skill in local mode (see its *Called from a review
+   loop*), passing the round number, the approved plan, and from round 2
+   on the previous round's findings. A round requests a major change
+   when it reports any blockers (verdict "net-positive with required
+   fixes" or "needs rework"); fix them and review again. Apply agreed
+   suggestions along the way, but suggestions alone don't trigger
+   another round. Report blockers and suggestions each round.
 8. **Pause for manual review** — present the final diff/summary and stop.
    Do not run `git push`, do not force-push, and do not create or update a
    GitHub PR via `gh pr create`/`gh pr edit --add-...` (opening a PR pushes
