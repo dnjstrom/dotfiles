@@ -42,7 +42,9 @@ Work through the following pipeline for: $ARGUMENTS
      default branch.
    - Report the stack name, its folder, and each repo's branch.
 3. **Plan** — using the primer, draft an implementation plan (native plan
-   mode). Do not start implementing yet.
+   mode). Do not start implementing yet. If the work is best shipped as
+   several PRs, the plan lists them in merge order, each with its scope
+   and what it depends on.
 4. **Validate** — run the plan through a review loop (see *Review loops*
    below) with the `plan-validator` subagent. A round requests a major
    change when its verdict is "needs revision" or "needs more research";
@@ -53,7 +55,12 @@ Work through the following pipeline for: $ARGUMENTS
    the draft, and only re-invoke `admin` in send mode if it's explicitly
    approved.
 5. **Pause for approval** — present the (possibly revised) plan and stop.
-   Do not implement until it's explicitly approved.
+   Do not implement until it's explicitly approved. If the plan splits
+   the work into several PRs and there is a Linear ticket, first invoke
+   `admin` to draft one sub-issue of that ticket per PR, and present the
+   drafts with the plan. Once the plan and drafts are approved, re-invoke
+   `admin` in send mode to create the approved sub-issues, and use each
+   one as its PR's ticket from then on.
 6. **Implement** — once approved, implement the plan normally.
 7. **Review** — run the diff through a review loop with the
    `code-reviewer` subagent. A round requests a major change when it
@@ -71,7 +78,8 @@ Work through the following pipeline for: $ARGUMENTS
    nothing reaches the remote before this checkpoint.
 9. **Sync** — only after the push/PR has been explicitly approved and done,
    invoke `admin` to draft the Linear ticket and GitHub PR updates
-   (what was actually built, remaining to-dos, follow-ups). Present the
+   (what was actually built, remaining to-dos, follow-ups), including
+   the status of each PR's sub-issue, if any. Present the
    draft in full and only re-invoke `admin` in send mode — with the exact
    approved content — once it's explicitly approved. Nothing gets posted to
    Linear or GitHub without that explicit sign-off, same as the push gate

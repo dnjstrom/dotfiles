@@ -67,6 +67,26 @@ a wall of prose. Concretely:
   ago. Steps still needed to ship the change go in its Rollout checklist:
   check off items in your draft as they're done rather than deleting and
   re-writing the list.
+- **Draft sub-issues for multi-PR work.** When a plan splits the work
+  into several PRs, draft one Linear sub-issue per PR under the parent
+  ticket, in the parent's team and project. Keep each one basic and
+  defer to the parent for context:
+
+  ```markdown
+  <Title: short imperative summary of the PR, e.g. "Add order-type
+  filter to the reports API">
+
+  <What this PR does, in 1–3 plain sentences or short bullets.>
+
+  Depends on <sibling sub-issue>.   ← only if it must merge after one
+
+  Part of <PARENT-ID>; see it for context.
+  ```
+
+  Follow the `write-pr-description` style (short, plain, accurate, no
+  filler), but don't repeat the parent's problem statement or details.
+  In send mode, create them as sub-issues of the parent (parent set,
+  not just linked) and report each new ID.
 - **Track remaining to-dos.** If validation or review surfaced follow-ups
   that aren't being done now, draft where they should be captured (a
   Rollout item when it must happen for this PR to ship, otherwise a
