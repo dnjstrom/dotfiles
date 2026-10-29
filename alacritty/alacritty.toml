@@ -1,5 +1,5 @@
 [terminal.shell]
-args = ["-l", "-c", "tmux new-session -A -s main"]
+args = ["-l", "-c", "tmux new-session -A -s main -c ~/Dema.ai"]
 program = "/bin/zsh"
 
 # Shift+Enter and Option+Enter both send plain \r by default (same as Enter),
