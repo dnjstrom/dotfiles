@@ -79,7 +79,8 @@ Work through the following pipeline for: $ARGUMENTS
 9. **Sync** — only after the push/PR has been explicitly approved and done,
    invoke `admin` to draft the Linear ticket and GitHub PR updates
    (what was actually built, remaining to-dos, follow-ups), including
-   the status of each PR's sub-issue, if any. Present the
+   the status of each PR's sub-issue, if any. No routine progress
+   comments on tickets: the PR descriptions carry that. Present the
    draft in full and only re-invoke `admin` in send mode — with the exact
    approved content — once it's explicitly approved. Nothing gets posted to
    Linear or GitHub without that explicit sign-off, same as the push gate

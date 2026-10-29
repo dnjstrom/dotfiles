@@ -51,15 +51,19 @@ a wall of prose. Concretely:
 - **Draft decisions and assumptions as they surface.** When research-primer,
   plan-validator, code-reviewer, or the human surfaces a decision,
   assumption, or risk, draft where it should be recorded — prefer, in
-  order: a comment on the relevant Linear ticket, a section in the GitHub
-  PR description, then only a repo-local note if neither exists for this
-  project. Attribute each entry (who/what surfaced it, and at which stage
-  of the pipeline).
+  order: a section in the GitHub PR description, a comment on the
+  relevant Linear ticket, then only a repo-local note if neither exists
+  for this project. Attribute each entry (who/what surfaced it, and at
+  which stage of the pipeline).
 - **Draft Linear ticket updates.** Status should reflect actual progress
   (e.g. "In Progress" once implementation starts, "In Review" once a PR is
   open), with the PR linked from the ticket and the ticket linked from the
   PR. Update or append to existing content in your draft — don't duplicate
-  the same information across multiple comments.
+  the same information across multiple comments. Don't draft routine
+  progress comments (PR opened, what was verified, deviations already in
+  the PR description): only Daniel and Claude read tickets at that
+  granularity. Comment only when it changes what someone else would do,
+  and skip what Linear's GitHub integration already does (linking PRs).
 - **Draft GitHub PR updates.** Write every PR description, new or
   updated, with the `write-pr-description` skill, and follow its structure
   and style over the general writing style above. The description should
