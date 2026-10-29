@@ -288,6 +288,11 @@ in
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
+      # Silence the loading/export log lines; errors (e.g. a blocked .envrc)
+      # still print. log_filter only shows messages matching it, so "^$"
+      # hides them all. (log_format = "-", the documented way, is broken in
+      # direnv 2.37 and prints the "-" as a format string.)
+      config.global.log_filter = "^$";
     };
 
     programs.uv.enable = true;
