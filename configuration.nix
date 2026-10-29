@@ -222,6 +222,13 @@ in
     # User-installed binaries (e.g. from curl | sh installers)
     home.sessionPath = [ "$HOME/.local/bin" ];
 
+    # Possibly temporary workaround: the nixpkgs claude-code wrapper (since
+    # ~2.1.311) sets CLAUDE_CODE_CERT_STORE=system, which fails TLS to
+    # api.anthropic.com with UNABLE_TO_GET_ISSUER_CERT_LOCALLY. The wrapper
+    # doesn't override an existing value, so use the bundled CA store. Remove
+    # once a newer claude-code package works without it.
+    home.sessionVariables.CLAUDE_CODE_CERT_STORE = "bundled";
+
     programs.git = {
       enable = true;
       lfs.enable = true;
