@@ -317,7 +317,10 @@ in
       enable = true;
       enableZshIntegration = true;
     };
-    programs.gh.enable = true;
+    programs.gh = {
+      enable = true;
+      extensions = [ unstable.gh-stack ];
+    };
     programs.ripgrep.enable = true;
     programs.fd.enable = true;
     programs.htop.enable = true;
