@@ -209,10 +209,10 @@ do
   local nord_utils = require("nord.utils")
   local editor_bg = nord_colors.polar_night.origin
 
-  vim.api.nvim_set_hl(0, "CodeDiffLineAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0, editor_bg) })
-  vim.api.nvim_set_hl(0, "CodeDiffLineDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0, editor_bg) })
-  vim.api.nvim_set_hl(0, "CodeDiffCharAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0.2, editor_bg) })
-  vim.api.nvim_set_hl(0, "CodeDiffCharDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0.2, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffLineAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0.04, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffLineDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0.04, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffCharAdd", { bg = nord_utils.darken(nord_colors.aurora.green, 0.25, editor_bg) })
+  vim.api.nvim_set_hl(0, "CodeDiffCharDelete", { bg = nord_utils.darken(nord_colors.aurora.red, 0.25, editor_bg) })
 end
 
 require("codediff").setup({
