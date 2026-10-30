@@ -222,6 +222,19 @@ require("codediff").setup({
     char_insert = "CodeDiffCharAdd",
     char_delete = "CodeDiffCharDelete",
   },
+  diff = {
+    -- Past the last/first hunk of a file, continue into the next/previous file
+    cycle_hunks_across_files = true,
+  },
+  keymaps = {
+    -- Step through hunks and files with the (otherwise unused) arrow keys
+    view = {
+      next_hunk = "<Down>",
+      prev_hunk = "<Up>",
+      next_file = "<Right>",
+      prev_file = "<Left>",
+    },
+  },
   explorer = {
     auto_open_on_cursor = true,
   },
